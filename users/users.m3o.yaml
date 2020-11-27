@@ -1,0 +1,4 @@
+name: users
+public: false
+version: 1.0.0
+config:

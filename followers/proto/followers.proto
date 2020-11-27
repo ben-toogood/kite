@@ -1,0 +1,56 @@
+syntax = "proto3";
+
+package kite.service.followers;
+option go_package = "github.com/ben-toogood/kite/followers/proto;followers";
+
+service Followers {
+  rpc GetFollowers(GetFollowersRequest) returns (GetFollowersResponse);
+  rpc GetFollowing(GetFollowingRequest) returns (GetFollowingResponse);
+	rpc Follow(FollowRequest) returns (FollowResponse);
+	rpc Unfollow(UnfollowRequest) returns (UnfollowResponse);
+}
+
+message Resource {
+  // e.g. usr_abc
+  string id = 1;
+  // e.g. user
+  string type = 2;
+}
+
+message GetFollowersRequest {
+  Resource resource = 1;
+}
+
+message GetFollowersResponse {
+  repeated Resource followers = 1;
+}
+
+message GetFollowingRequest {
+  Resource resource = 1;
+}
+
+message GetFollowingResponse {
+  repeated Resource following = 1;
+}
+
+message CountRequest {
+  Resource resource = 1;
+}
+
+message CountResponse {
+  int32 count = 1;
+}
+
+message FollowRequest {
+  Resource follower = 1;
+  Resource following = 2;
+}
+
+message FollowResponse {}
+
+message UnfollowRequest {
+  Resource follower = 1;
+  Resource following = 2;
+}
+
+message UnfollowResponse {}

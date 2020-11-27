@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package kite.validations;
+option go_package = "github.com/ben-toogood/kite/common/validations";
+
+message Error {
+  string field = 1;
+  string message = 2;
+}
+
+message Errors {
+  repeated Error errors = 1;
+}

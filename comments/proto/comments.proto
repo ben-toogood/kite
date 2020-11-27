@@ -1,0 +1,51 @@
+syntax = "proto3";
+
+package kite.service.comments;
+option go_package = "github.com/ben-toogood/kite/comments/proto;comments";
+import "google/protobuf/timestamp.proto";
+
+service Comments {
+  rpc Create(CreateRequest) returns (CreateResponse);
+  rpc List(ListRequest) returns (ListResponse);
+  rpc Delete(DeleteRequest) returns (DeleteResponse);
+}
+
+message Resource {
+  // e.g. post_abc
+  string id = 1;
+  // e.g. post
+  string type = 2;
+}
+
+message Comment {
+  string id = 1;
+  Resource resource = 2;
+  string author_id = 3;
+  string message = 4;
+  google.protobuf.Timestamp created_at = 5;
+  google.protobuf.Timestamp updated_at = 6;
+}
+
+message CreateRequest {
+  Resource resource = 1;
+  string author_id = 2;
+  string message = 3;
+}
+
+message CreateResponse {
+  Comment comment = 1;
+}
+
+message ListRequest {
+  Resource resource = 1;
+}
+
+message ListResponse {
+  repeated Comment comments = 1;
+}
+
+message DeleteRequest {
+  string id = 1;
+}
+
+message DeleteResponse {}
