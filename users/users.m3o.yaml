@@ -1,4 +1,16 @@
 name: users
 public: false
-version: 1.0.0
+schedule:
+  - name: Slackbot
+    path: cmd/slackbot
+    cron: 0 7 0 0 0
+run:
+  - name: Server
+    path: cmd/users
+  - name: Subscriber
+    path: cmd/subscriber
+    replicas: 2
 config:
+  foo: bar
+  bar:
+    secret: encryptedxyz
