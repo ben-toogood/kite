@@ -3,6 +3,7 @@ module github.com/ben-toogood/kite
 go 1.15
 
 require (
+	github.com/bufbuild/buf v0.32.0 // indirect
 	github.com/cloudflare/cfssl v1.5.0
 	github.com/echo-health/opentracing-gorm v0.0.0-20201105190904-c929471104f6
 	github.com/go-ozzo/ozzo-validation v3.6.0+incompatible
@@ -21,7 +22,7 @@ require (
 	github.com/sirupsen/logrus v1.7.0
 	github.com/stretchr/testify v1.6.1
 	google.golang.org/grpc v1.33.1
-	google.golang.org/protobuf v1.25.0
+	google.golang.org/protobuf v1.25.1-0.20201020201750-d3470999428b
 	gorm.io/driver/postgres v1.0.5
 	gorm.io/gorm v1.20.7
 )

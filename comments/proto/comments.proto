@@ -6,42 +6,47 @@ import "google/protobuf/timestamp.proto";
 
 service Comments {
   rpc Create(CreateRequest) returns (CreateResponse);
-  rpc List(ListRequest) returns (ListResponse);
+  rpc Get(GetRequest) returns (GetResponse);
   rpc Delete(DeleteRequest) returns (DeleteResponse);
 }
 
-message Resource {
-  // e.g. post_abc
-  string id = 1;
-  // e.g. post
-  string type = 2;
+enum ResourceType {
+  ResourceTypeUnknown = 0;
+  Post = 1;
 }
 
 message Comment {
   string id = 1;
-  Resource resource = 2;
-  string author_id = 3;
-  string message = 4;
-  google.protobuf.Timestamp created_at = 5;
-  google.protobuf.Timestamp updated_at = 6;
+  ResourceType resource_type = 2;
+  string resource_id = 3;
+  string author_id = 4;
+  string message = 5;
+  google.protobuf.Timestamp created_at = 6;
+  google.protobuf.Timestamp updated_at = 7;
 }
 
 message CreateRequest {
-  Resource resource = 1;
-  string author_id = 2;
-  string message = 3;
+  ResourceType resource_type = 1;
+  string resource_id = 2;
+  string author_id = 3;
+  string message = 4;
 }
 
 message CreateResponse {
   Comment comment = 1;
 }
 
-message ListRequest {
-  Resource resource = 1;
+message GetRequest {
+  ResourceType resource_type = 1;
+  repeated string resource_ids = 2;
 }
 
-message ListResponse {
+message ResourceComments {
   repeated Comment comments = 1;
+}
+
+message GetResponse {
+  map<string,ResourceComments> resources = 1;
 }
 
 message DeleteRequest {

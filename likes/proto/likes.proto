@@ -2,6 +2,7 @@ syntax = "proto3";
 
 package kite.service.likes;
 option go_package = "github.com/ben-toogood/kite/likes/proto;likes";
+import "google/protobuf/timestamp.proto";
 
 service Likes {
   rpc Count(CountRequest) returns (CountResponse);
@@ -10,41 +11,57 @@ service Likes {
 	rpc Unlike(UnlikeRequest) returns (UnlikeResponse);
 }
 
-message Resource {
+enum ResourceType {
+  ResourceTypeUnknown = 0;
+  Post = 1;
+  User = 2;
+}
+
+message Like {
   // e.g. post_abc
-  string id = 1;
+  string resource_id = 1;
   // e.g. post
-  string type = 2;
-  // number of likes the resource has
-  int32 likes = 3;
+  ResourceType resource_type = 2;
+  // e.g. usr_abc, the user who liked the resource
+  string user_id = 3;
+  // when was the resource liked
+  google.protobuf.Timestamp created_at = 4;
 }
 
 message CountRequest {
-  repeated Resource resources = 1;
+  ResourceType resource_type = 1;
+  repeated string resource_ids = 2;
 }
 
 message CountResponse {
-  repeated Resource resources = 1;
+  map<string,int32> counts = 1;
 }
 
 message GetRequest {
-  Resource resource = 1;
+  ResourceType resource_type = 1;
+  repeated string resource_ids = 2;
+}
+
+message ResourceLikes {
+  repeated Like likes = 1;
 }
 
 message GetResponse {
-  repeated Resource likers = 1;
+  map<string, ResourceLikes> resources = 1;
 }
 
 message LikeRequest {
-  Resource resource = 1;
-  Resource liker = 2;
+  ResourceType resource_type = 1;
+  string resource_id = 2;
+  string user_id = 3;
 }
 
 message LikeResponse {}
 
 message UnlikeRequest {
-  Resource resource = 1;
-  Resource liker = 2;
+  ResourceType resource_type = 1;
+  string resource_id = 2;
+  string user_id = 3;
 }
 
 message UnlikeResponse {}

@@ -10,15 +10,19 @@ service Followers {
 	rpc Unfollow(UnfollowRequest) returns (UnfollowResponse);
 }
 
-message Resource {
-  // e.g. usr_abc
-  string id = 1;
-  // e.g. user
-  string type = 2;
+enum ResourceType {
+  ResourceTypeUnknown = 0;
+  User = 1;
 }
 
 message GetFollowersRequest {
-  Resource resource = 1;
+  ResourceType resource_type = 1;
+  string resource_id = 2;
+}
+
+message Resource {
+  ResourceType type = 1;
+  ResourceType id = 2;
 }
 
 message GetFollowersResponse {
@@ -26,7 +30,8 @@ message GetFollowersResponse {
 }
 
 message GetFollowingRequest {
-  Resource resource = 1;
+  ResourceType resource_type = 1;
+  string resource_id = 2;
 }
 
 message GetFollowingResponse {
@@ -34,7 +39,8 @@ message GetFollowingResponse {
 }
 
 message CountRequest {
-  Resource resource = 1;
+  ResourceType resource_type = 1;
+  string resource_id = 2;
 }
 
 message CountResponse {
@@ -42,15 +48,19 @@ message CountResponse {
 }
 
 message FollowRequest {
-  Resource follower = 1;
-  Resource following = 2;
+  ResourceType follower_type = 1;
+  string follower_id = 2;
+  ResourceType following_type = 3;
+  string following_id = 4;
 }
 
 message FollowResponse {}
 
 message UnfollowRequest {
-  Resource follower = 1;
-  Resource following = 2;
+  ResourceType follower_type = 1;
+  string follower_id = 2;
+  ResourceType following_type = 3;
+  string following_id = 4;
 }
 
 message UnfollowResponse {}
