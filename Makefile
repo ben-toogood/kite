@@ -4,4 +4,4 @@ proto:
 
 .PHONY: breaking_change
 breaking_change:
-	buf check breaking --against-input .git#branch=main
+	buf check breaking --against .git#branch=main
