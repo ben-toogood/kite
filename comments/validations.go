@@ -12,3 +12,16 @@ func (a *CreateRequest) Validate() error {
 		validation.Field(&a.ResourceType, validation.Required, validation.NotIn(ResourceType_RESOURCE_TYPE_UNSPECIFIED)),
 	)
 }
+
+func (a *GetRequest) Validate() error {
+	return validation.ValidateStruct(a,
+		validation.Field(&a.ResourceIds, validation.Required),
+		validation.Field(&a.ResourceType, validation.Required, validation.NotIn(ResourceType_RESOURCE_TYPE_UNSPECIFIED)),
+	)
+}
+
+func (a *DeleteRequest) Validate() error {
+	return validation.ValidateStruct(a,
+		validation.Field(&a.Id, validation.Required),
+	)
+}

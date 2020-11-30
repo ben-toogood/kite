@@ -41,12 +41,12 @@ message GetRequest {
   repeated string resource_ids = 2;
 }
 
-message Comments {
+message Resource {
   repeated Comment comments = 1;
 }
 
 message GetResponse {
-  map<string,Comments> resources = 1;
+  map<string,Resource> resources = 1;
 }
 
 message DeleteRequest {

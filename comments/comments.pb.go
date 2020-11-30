@@ -344,7 +344,7 @@ func (x *GetRequest) GetResourceIds() []string {
 	return nil
 }
 
-type Comments struct {
+type Resource struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
@@ -352,8 +352,8 @@ type Comments struct {
 	Comments []*Comment `protobuf:"bytes,1,rep,name=comments,proto3" json:"comments,omitempty"`
 }
 
-func (x *Comments) Reset() {
-	*x = Comments{}
+func (x *Resource) Reset() {
+	*x = Resource{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_comments_comments_proto_msgTypes[4]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -361,13 +361,13 @@ func (x *Comments) Reset() {
 	}
 }
 
-func (x *Comments) String() string {
+func (x *Resource) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*Comments) ProtoMessage() {}
+func (*Resource) ProtoMessage() {}
 
-func (x *Comments) ProtoReflect() protoreflect.Message {
+func (x *Resource) ProtoReflect() protoreflect.Message {
 	mi := &file_comments_comments_proto_msgTypes[4]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -379,12 +379,12 @@ func (x *Comments) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use Comments.ProtoReflect.Descriptor instead.
-func (*Comments) Descriptor() ([]byte, []int) {
+// Deprecated: Use Resource.ProtoReflect.Descriptor instead.
+func (*Resource) Descriptor() ([]byte, []int) {
 	return file_comments_comments_proto_rawDescGZIP(), []int{4}
 }
 
-func (x *Comments) GetComments() []*Comment {
+func (x *Resource) GetComments() []*Comment {
 	if x != nil {
 		return x.Comments
 	}
@@ -396,7 +396,7 @@ type GetResponse struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Resources map[string]*Comments `protobuf:"bytes,1,rep,name=resources,proto3" json:"resources,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"`
+	Resources map[string]*Resource `protobuf:"bytes,1,rep,name=resources,proto3" json:"resources,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"`
 }
 
 func (x *GetResponse) Reset() {
@@ -431,7 +431,7 @@ func (*GetResponse) Descriptor() ([]byte, []int) {
 	return file_comments_comments_proto_rawDescGZIP(), []int{5}
 }
 
-func (x *GetResponse) GetResources() map[string]*Comments {
+func (x *GetResponse) GetResources() map[string]*Resource {
 	if x != nil {
 		return x.Resources
 	}
@@ -570,7 +570,7 @@ var file_comments_comments_proto_rawDesc = []byte{
 	0x72, 0x65, 0x73, 0x6f, 0x75, 0x72, 0x63, 0x65, 0x54, 0x79, 0x70, 0x65, 0x12, 0x21, 0x0a, 0x0c,
 	0x72, 0x65, 0x73, 0x6f, 0x75, 0x72, 0x63, 0x65, 0x5f, 0x69, 0x64, 0x73, 0x18, 0x02, 0x20, 0x03,
 	0x28, 0x09, 0x52, 0x0b, 0x72, 0x65, 0x73, 0x6f, 0x75, 0x72, 0x63, 0x65, 0x49, 0x64, 0x73, 0x22,
-	0x39, 0x0a, 0x08, 0x43, 0x6f, 0x6d, 0x6d, 0x65, 0x6e, 0x74, 0x73, 0x12, 0x2d, 0x0a, 0x08, 0x63,
+	0x39, 0x0a, 0x08, 0x52, 0x65, 0x73, 0x6f, 0x75, 0x72, 0x63, 0x65, 0x12, 0x2d, 0x0a, 0x08, 0x63,
 	0x6f, 0x6d, 0x6d, 0x65, 0x6e, 0x74, 0x73, 0x18, 0x01, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x11, 0x2e,
 	0x63, 0x6f, 0x6d, 0x6d, 0x65, 0x6e, 0x74, 0x73, 0x2e, 0x43, 0x6f, 0x6d, 0x6d, 0x65, 0x6e, 0x74,
 	0x52, 0x08, 0x63, 0x6f, 0x6d, 0x6d, 0x65, 0x6e, 0x74, 0x73, 0x22, 0xa3, 0x01, 0x0a, 0x0b, 0x47,
@@ -582,8 +582,8 @@ var file_comments_comments_proto_rawDesc = []byte{
 	0x0a, 0x0e, 0x52, 0x65, 0x73, 0x6f, 0x75, 0x72, 0x63, 0x65, 0x73, 0x45, 0x6e, 0x74, 0x72, 0x79,
 	0x12, 0x10, 0x0a, 0x03, 0x6b, 0x65, 0x79, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x03, 0x6b,
 	0x65, 0x79, 0x12, 0x28, 0x0a, 0x05, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28,
-	0x0b, 0x32, 0x12, 0x2e, 0x63, 0x6f, 0x6d, 0x6d, 0x65, 0x6e, 0x74, 0x73, 0x2e, 0x43, 0x6f, 0x6d,
-	0x6d, 0x65, 0x6e, 0x74, 0x73, 0x52, 0x05, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x3a, 0x02, 0x38, 0x01,
+	0x0b, 0x32, 0x12, 0x2e, 0x63, 0x6f, 0x6d, 0x6d, 0x65, 0x6e, 0x74, 0x73, 0x2e, 0x52, 0x65, 0x73,
+	0x6f, 0x75, 0x72, 0x63, 0x65, 0x52, 0x05, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x3a, 0x02, 0x38, 0x01,
 	0x22, 0x1f, 0x0a, 0x0d, 0x44, 0x65, 0x6c, 0x65, 0x74, 0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73,
 	0x74, 0x12, 0x0e, 0x0a, 0x02, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x02, 0x69,
 	0x64, 0x22, 0x10, 0x0a, 0x0e, 0x44, 0x65, 0x6c, 0x65, 0x74, 0x65, 0x52, 0x65, 0x73, 0x70, 0x6f,
@@ -629,7 +629,7 @@ var file_comments_comments_proto_goTypes = []interface{}{
 	(*CreateRequest)(nil),       // 2: comments.CreateRequest
 	(*CreateResponse)(nil),      // 3: comments.CreateResponse
 	(*GetRequest)(nil),          // 4: comments.GetRequest
-	(*Comments)(nil),            // 5: comments.Comments
+	(*Resource)(nil),            // 5: comments.Resource
 	(*GetResponse)(nil),         // 6: comments.GetResponse
 	(*DeleteRequest)(nil),       // 7: comments.DeleteRequest
 	(*DeleteResponse)(nil),      // 8: comments.DeleteResponse
@@ -643,9 +643,9 @@ var file_comments_comments_proto_depIdxs = []int32{
 	0,  // 3: comments.CreateRequest.resource_type:type_name -> comments.ResourceType
 	1,  // 4: comments.CreateResponse.comment:type_name -> comments.Comment
 	0,  // 5: comments.GetRequest.resource_type:type_name -> comments.ResourceType
-	1,  // 6: comments.Comments.comments:type_name -> comments.Comment
+	1,  // 6: comments.Resource.comments:type_name -> comments.Comment
 	9,  // 7: comments.GetResponse.resources:type_name -> comments.GetResponse.ResourcesEntry
-	5,  // 8: comments.GetResponse.ResourcesEntry.value:type_name -> comments.Comments
+	5,  // 8: comments.GetResponse.ResourcesEntry.value:type_name -> comments.Resource
 	2,  // 9: comments.CommentsService.Create:input_type -> comments.CreateRequest
 	4,  // 10: comments.CommentsService.Get:input_type -> comments.GetRequest
 	7,  // 11: comments.CommentsService.Delete:input_type -> comments.DeleteRequest
@@ -714,7 +714,7 @@ func file_comments_comments_proto_init() {
 			}
 		}
 		file_comments_comments_proto_msgTypes[4].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*Comments); i {
+			switch v := v.(*Resource); i {
 			case 0:
 				return &v.state
 			case 1:
