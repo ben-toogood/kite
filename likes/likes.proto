@@ -1,10 +1,10 @@
 syntax = "proto3";
 
-package kite.service.likes;
-option go_package = "github.com/ben-toogood/kite/likes/proto;likes";
+package likes;
+option go_package = "github.com/ben-toogood/kite/likes";
 import "google/protobuf/timestamp.proto";
 
-service Likes {
+service LikesService {
   rpc Count(CountRequest) returns (CountResponse);
   rpc Get(GetRequest) returns (GetResponse);
 	rpc Like(LikeRequest) returns (LikeResponse);
@@ -12,9 +12,8 @@ service Likes {
 }
 
 enum ResourceType {
-  ResourceTypeUnknown = 0;
-  Post = 1;
-  User = 2;
+  RESOURCE_TYPE_UNSPECIFIED = 0;
+  RESOURCE_TYPE_POST = 1;
 }
 
 message Like {

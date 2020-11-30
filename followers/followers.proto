@@ -1,9 +1,9 @@
 syntax = "proto3";
 
-package kite.service.followers;
-option go_package = "github.com/ben-toogood/kite/followers/proto;followers";
+package followers;
+option go_package = "github.com/ben-toogood/kite/followers";
 
-service Followers {
+service FollowersService {
   rpc GetFollowers(GetFollowersRequest) returns (GetFollowersResponse);
   rpc GetFollowing(GetFollowingRequest) returns (GetFollowingResponse);
 	rpc Follow(FollowRequest) returns (FollowResponse);
@@ -11,8 +11,8 @@ service Followers {
 }
 
 enum ResourceType {
-  ResourceTypeUnknown = 0;
-  User = 1;
+  RESOURCE_TYPE_UNSPECIFIED = 0;
+  RESOURCE_TYPE_USER = 1;
 }
 
 message GetFollowersRequest {

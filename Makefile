@@ -5,3 +5,11 @@ proto:
 .PHONY: breaking_change
 breaking_change:
 	buf check breaking --against .git#branch=main
+	
+.PHONY: lint
+lint:
+	buf check lint
+	
+.PHONY: test
+test:
+	go test ./... -v 

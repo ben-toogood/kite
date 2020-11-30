@@ -4,7 +4,7 @@ import (
 	"context"
 	"testing"
 
-	pb "github.com/ben-toogood/kite/comments/proto"
+	"github.com/ben-toogood/kite/comments"
 	"github.com/ben-toogood/kite/common/validations"
 	"github.com/segmentio/ksuid"
 	"github.com/stretchr/testify/assert"
@@ -14,7 +14,7 @@ func TestCreate(t *testing.T) {
 	h := testHandler(t)
 
 	t.Run("Invalid", func(t *testing.T) {
-		rsp, err := h.Create(context.TODO(), &pb.CreateRequest{})
+		rsp, err := h.Create(context.TODO(), &comments.CreateRequest{})
 		assert.Nil(t, rsp)
 
 		fields := make(map[string]bool)
@@ -28,10 +28,10 @@ func TestCreate(t *testing.T) {
 	})
 
 	t.Run("Valid", func(t *testing.T) {
-		req := &pb.CreateRequest{
+		req := &comments.CreateRequest{
 			AuthorId:     ksuid.New().String(),
 			ResourceId:   ksuid.New().String(),
-			ResourceType: pb.ResourceType_Post,
+			ResourceType: comments.ResourceType_RESOURCE_TYPE_POST,
 			Message:      "Awesome post!",
 		}
 		rsp, err := h.Create(context.TODO(), req)

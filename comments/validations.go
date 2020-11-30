@@ -9,6 +9,6 @@ func (a *CreateRequest) Validate() error {
 		validation.Field(&a.AuthorId, validation.Required),
 		validation.Field(&a.Message, validation.Required, validation.Length(1, 255)),
 		validation.Field(&a.ResourceId, validation.Required, validation.Length(1, 255)),
-		validation.Field(&a.ResourceType, validation.Required, validation.NotIn(ResourceType_ResourceTypeUnknown)),
+		validation.Field(&a.ResourceType, validation.Required, validation.NotIn(ResourceType_RESOURCE_TYPE_UNSPECIFIED)),
 	)
 }

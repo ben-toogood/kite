@@ -5,13 +5,13 @@ import (
 
 	"github.com/ben-toogood/kite/common/database"
 	"github.com/ben-toogood/kite/common/validations"
+	"github.com/ben-toogood/kite/users"
 	"github.com/ben-toogood/kite/users/model"
-	pb "github.com/ben-toogood/kite/users/proto"
 	"github.com/lileio/lile/v2/protocopy"
 )
 
 // Create a user
-func (u *Users) Create(ctx context.Context, req *pb.CreateRequest) (*pb.CreateResponse, error) {
+func (u *Users) Create(ctx context.Context, req *users.CreateRequest) (*users.CreateResponse, error) {
 	// validate the request
 	if err := req.Validate(); err != nil {
 		return nil, validations.NewError(ctx, err)
@@ -28,7 +28,7 @@ func (u *Users) Create(ctx context.Context, req *pb.CreateRequest) (*pb.CreateRe
 	}
 
 	// serialize the result
-	rsp := pb.CreateResponse{User: &pb.User{}}
+	rsp := users.CreateResponse{User: &users.User{}}
 	if err := protocopy.ToProto(usr, rsp.User); err != nil {
 		return nil, err
 	}

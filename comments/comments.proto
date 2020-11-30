@@ -1,18 +1,18 @@
 syntax = "proto3";
 
-package kite.service.comments;
-option go_package = "github.com/ben-toogood/kite/comments/proto;comments";
+package comments;
+option go_package = "github.com/ben-toogood/kite/comments";
 import "google/protobuf/timestamp.proto";
 
-service Comments {
+service CommentsService {
   rpc Create(CreateRequest) returns (CreateResponse);
   rpc Get(GetRequest) returns (GetResponse);
   rpc Delete(DeleteRequest) returns (DeleteResponse);
 }
 
 enum ResourceType {
-  ResourceTypeUnknown = 0;
-  Post = 1;
+  RESOURCE_TYPE_UNSPECIFIED = 0;
+  RESOURCE_TYPE_POST = 1;
 }
 
 message Comment {
@@ -41,12 +41,12 @@ message GetRequest {
   repeated string resource_ids = 2;
 }
 
-message ResourceComments {
+message Comments {
   repeated Comment comments = 1;
 }
 
 message GetResponse {
-  map<string,ResourceComments> resources = 1;
+  map<string,Comments> resources = 1;
 }
 
 message DeleteRequest {

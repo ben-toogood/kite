@@ -86,7 +86,7 @@ func connect(connString string, poolSize int) (*gorm.DB, error) {
 		return nil, err
 	}
 
-	conn.Debug()
+	// conn.Debug()
 	return conn, nil
 }
 

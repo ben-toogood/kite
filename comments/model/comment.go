@@ -3,14 +3,14 @@ package model
 import (
 	"time"
 
-	pb "github.com/ben-toogood/kite/comments/proto"
+	"github.com/ben-toogood/kite/comments"
 	"github.com/segmentio/ksuid"
 	"gorm.io/gorm"
 )
 
 type Comment struct {
 	ID           string
-	ResourceType pb.ResourceType
+	ResourceType comments.ResourceType
 	ResourceID   string
 	AuthorID     string
 	Message      string

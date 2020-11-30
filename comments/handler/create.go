@@ -3,15 +3,15 @@ package handler
 import (
 	"context"
 
+	"github.com/ben-toogood/kite/comments"
 	"github.com/ben-toogood/kite/comments/model"
-	pb "github.com/ben-toogood/kite/comments/proto"
 	"github.com/ben-toogood/kite/common/database"
 	"github.com/ben-toogood/kite/common/validations"
 	"github.com/lileio/lile/v2/protocopy"
 )
 
 // Create a user
-func (c *Comments) Create(ctx context.Context, req *pb.CreateRequest) (*pb.CreateResponse, error) {
+func (c *Comments) Create(ctx context.Context, req *comments.CreateRequest) (*comments.CreateResponse, error) {
 	// validate the request
 	if err := req.Validate(); err != nil {
 		return nil, validations.NewError(ctx, err)
@@ -29,7 +29,7 @@ func (c *Comments) Create(ctx context.Context, req *pb.CreateRequest) (*pb.Creat
 	}
 
 	// serialize the result
-	rsp := pb.CreateResponse{Comment: &pb.Comment{}}
+	rsp := comments.CreateResponse{Comment: &comments.Comment{}}
 	if err := protocopy.ToProto(cmt, rsp.Comment); err != nil {
 		return nil, err
 	}

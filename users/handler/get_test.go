@@ -4,7 +4,7 @@ import (
 	"context"
 	"testing"
 
-	pb "github.com/ben-toogood/kite/users/proto"
+	"github.com/ben-toogood/kite/users"
 	"github.com/google/uuid"
 	"github.com/stretchr/testify/assert"
 )
@@ -13,13 +13,13 @@ func TestGet(t *testing.T) {
 	h := testHandler(t)
 
 	t.Run("MissingIDs", func(t *testing.T) {
-		rsp, err := h.Get(context.TODO(), &pb.GetRequest{})
+		rsp, err := h.Get(context.TODO(), &users.GetRequest{})
 		assert.NotNil(t, rsp)
 		assert.NoError(t, err)
 	})
 
 	t.Run("RecordNotFound", func(t *testing.T) {
-		rsp, err := h.Get(context.TODO(), &pb.GetRequest{
+		rsp, err := h.Get(context.TODO(), &users.GetRequest{
 			Ids: []string{"usr-one"},
 		})
 		assert.NoError(t, err)
@@ -35,7 +35,7 @@ func TestGet(t *testing.T) {
 	})
 
 	t.Run("RecordFound", func(t *testing.T) {
-		cReq := &pb.CreateRequest{
+		cReq := &users.CreateRequest{
 			FirstName: "John",
 			LastName:  "Doe",
 			Email:     uuid.New().String() + "@gmail.com",
@@ -43,7 +43,7 @@ func TestGet(t *testing.T) {
 		cRsp, err := h.Create(context.TODO(), cReq)
 		assert.NoError(t, err)
 
-		gRsp, err := h.Get(context.TODO(), &pb.GetRequest{
+		gRsp, err := h.Get(context.TODO(), &users.GetRequest{
 			Ids: []string{cRsp.User.Id},
 		})
 		assert.NoError(t, err)

@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package kite.validations;
+package common.validations;
 option go_package = "github.com/ben-toogood/kite/common/validations";
 
 message Error {

@@ -1,10 +1,10 @@
 syntax = "proto3";
 
-package kite.service.users;
-option go_package = "github.com/ben-toogood/kite/users/proto;users";
+package users;
+option go_package = "github.com/ben-toogood/kite/users";
 import "google/protobuf/timestamp.proto";
 
-service Users {
+service UsersService {
   rpc Create (CreateRequest) returns (CreateResponse);
   rpc Get (GetRequest) returns (GetResponse);
 }

@@ -8,9 +8,9 @@ import (
 	"net"
 
 	"github.com/ben-toogood/kite/common/database"
+	"github.com/ben-toogood/kite/users"
 	"github.com/ben-toogood/kite/users/handler"
 	"github.com/ben-toogood/kite/users/model"
-	pb "github.com/ben-toogood/kite/users/proto"
 	"google.golang.org/grpc"
 )
 
@@ -31,6 +31,6 @@ func main() {
 	}
 	var opts []grpc.ServerOption
 	grpcServer := grpc.NewServer(opts...)
-	pb.RegisterUsersServer(grpcServer, &handler.Users{DB: db})
+	users.RegisterUsersServiceServer(grpcServer, &handler.Users{DB: db})
 	grpcServer.Serve(lis)
 }

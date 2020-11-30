@@ -6,7 +6,7 @@ import (
 
 	"github.com/ben-toogood/kite/common/database"
 	"github.com/ben-toogood/kite/common/validations"
-	pb "github.com/ben-toogood/kite/users/proto"
+	"github.com/ben-toogood/kite/users"
 	"github.com/google/uuid"
 	"github.com/stretchr/testify/assert"
 )
@@ -15,7 +15,7 @@ func TestCreate(t *testing.T) {
 	h := testHandler(t)
 
 	t.Run("MissingFirstName", func(t *testing.T) {
-		rsp, err := h.Create(context.TODO(), &pb.CreateRequest{
+		rsp, err := h.Create(context.TODO(), &users.CreateRequest{
 			LastName: "Doe",
 			Email:    "johndoe@gmail.com",
 		})
@@ -32,7 +32,7 @@ func TestCreate(t *testing.T) {
 	})
 
 	t.Run("MissingLastName", func(t *testing.T) {
-		rsp, err := h.Create(context.TODO(), &pb.CreateRequest{
+		rsp, err := h.Create(context.TODO(), &users.CreateRequest{
 			FirstName: "John",
 			Email:     "johndoe@gmail.com",
 		})
@@ -49,7 +49,7 @@ func TestCreate(t *testing.T) {
 	})
 
 	t.Run("MissingEmail", func(t *testing.T) {
-		rsp, err := h.Create(context.TODO(), &pb.CreateRequest{
+		rsp, err := h.Create(context.TODO(), &users.CreateRequest{
 			FirstName: "John",
 			LastName:  "Doe",
 		})
@@ -66,7 +66,7 @@ func TestCreate(t *testing.T) {
 	})
 
 	t.Run("DuplicateEmail", func(t *testing.T) {
-		req := &pb.CreateRequest{
+		req := &users.CreateRequest{
 			FirstName: "John",
 			LastName:  "Doe",
 			Email:     uuid.New().String() + "@gmail.com",
@@ -79,7 +79,7 @@ func TestCreate(t *testing.T) {
 	})
 
 	t.Run("Valid", func(t *testing.T) {
-		req := &pb.CreateRequest{
+		req := &users.CreateRequest{
 			FirstName: "John",
 			LastName:  "Doe",
 			Email:     uuid.New().String() + "@gmail.com",
