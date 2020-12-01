@@ -1,6 +1,6 @@
 package users
 
-//go:generate go run github.com/maxbrunsfeld/counterfeiter/v6 -o fake/users.go . UsersServiceClient
+//go:generate go run github.com/maxbrunsfeld/counterfeiter/v6 . UsersServiceClient
 
 import (
 	sync "sync"

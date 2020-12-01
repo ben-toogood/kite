@@ -1,0 +1,33 @@
+type User {
+  id: ID!
+  firstName: String!
+  lastName: String!
+}
+
+type Comment {
+  Author: User!
+  Message: String!
+}
+
+type Post {
+  Author: User!
+  Comments: [Comment]
+}
+
+input CommentInput {
+  postID: String!
+  message: String!
+}
+
+type Mutation {
+  signup(
+    firstName: String!
+    lastName: String!
+    email: String!
+  ): User!
+
+  # comment(input: CommentInput!): Comment!
+}
+
+type Query {
+}

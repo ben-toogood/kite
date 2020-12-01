@@ -5,15 +5,18 @@ go 1.15
 require (
 	github.com/99designs/gqlgen v0.13.0
 	github.com/cloudflare/cfssl v1.5.0
+	github.com/friendsofgo/graphiql v0.2.2 // indirect
 	github.com/go-ozzo/ozzo-validation/v4 v4.3.0
 	github.com/gofrs/uuid v3.3.0+incompatible // indirect
 	github.com/golang/protobuf v1.4.3
 	github.com/google/go-cmp v0.5.3 // indirect
 	github.com/google/uuid v1.1.2
+	github.com/graph-gophers/graphql-go v0.0.0-20201113091052-beb923fada29
 	github.com/hashicorp/golang-lru v0.5.3 // indirect
 	github.com/kr/text v0.2.0 // indirect
 	github.com/lib/pq v1.8.0 // indirect
 	github.com/lileio/lile/v2 v2.2.14-0.20200617145758-67284c38c56e
+	github.com/maxbrunsfeld/counterfeiter/v6 v6.3.0 // indirect
 	github.com/mitchellh/mapstructure v1.1.2 // indirect
 	github.com/niemeyer/pretty v0.0.0-20200227124842-a10e7caefd8e // indirect
 	github.com/pkg/errors v0.9.1 // indirect
@@ -33,4 +36,5 @@ require (
 	gopkg.in/yaml.v3 v3.0.0-20200615113413-eeeca48fe776 // indirect
 	gorm.io/driver/postgres v1.0.5
 	gorm.io/gorm v1.20.7
+	gotest.tools v2.2.0+incompatible
 )
