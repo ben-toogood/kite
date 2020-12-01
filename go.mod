@@ -3,7 +3,7 @@ module github.com/ben-toogood/kite
 go 1.15
 
 require (
-	github.com/99designs/gqlgen v0.13.0
+	github.com/asaskevich/govalidator v0.0.0-20200907205600-7a23bdc65eef // indirect
 	github.com/cloudflare/cfssl v1.5.0
 	github.com/friendsofgo/graphiql v0.2.2
 	github.com/go-ozzo/ozzo-validation/v4 v4.3.0
@@ -16,27 +16,26 @@ require (
 	github.com/kr/text v0.2.0 // indirect
 	github.com/lib/pq v1.8.0 // indirect
 	github.com/lileio/lile/v2 v2.2.14-0.20200617145758-67284c38c56e
-	github.com/maxbrunsfeld/counterfeiter/v6 v6.3.0 // indirect
-	github.com/mitchellh/mapstructure v1.1.2 // indirect
+	github.com/lileio/pubsub/v2 v2.3.1
 	github.com/niemeyer/pretty v0.0.0-20200227124842-a10e7caefd8e // indirect
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/prometheus/common v0.6.0
-	github.com/sanity-io/litter v1.2.0
 	github.com/segmentio/ksuid v1.0.3
 	github.com/sirupsen/logrus v1.7.0
 	github.com/stretchr/testify v1.6.1
 	github.com/tj/assert v0.0.3
-	github.com/vektah/gqlparser/v2 v2.1.0
-	golang.org/x/net v0.0.0-20201029221708-28c70e62bb1d // indirect
-	golang.org/x/sys v0.0.0-20201119102817-f84b799fce68 // indirect
+	golang.org/x/net v0.0.0-20201110031124-69a78807bb2b // indirect
+	golang.org/x/sync v0.0.0-20201020160332-67f06af15bc9 // indirect
+	golang.org/x/sys v0.0.0-20201130171929-760e229fe7c5 // indirect
+	golang.org/x/text v0.3.4 // indirect
 	golang.org/x/xerrors v0.0.0-20200804184101-5ec99f83aff1 // indirect
 	google.golang.org/genproto v0.0.0-20201119123407-9b1e624d6bc4 // indirect
-	google.golang.org/grpc v1.33.1
+	google.golang.org/grpc v1.33.2
 	google.golang.org/protobuf v1.25.1-0.20201020201750-d3470999428b
 	gopkg.in/check.v1 v1.0.0-20200902074654-038fdea0a05b // indirect
-	gopkg.in/yaml.v2 v2.3.0 // indirect
 	gopkg.in/yaml.v3 v3.0.0-20200615113413-eeeca48fe776 // indirect
 	gorm.io/driver/postgres v1.0.5
 	gorm.io/gorm v1.20.7
-	gotest.tools v2.2.0+incompatible
 )
+
+replace google.golang.org/grpc => google.golang.org/grpc v1.27.1

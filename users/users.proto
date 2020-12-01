@@ -35,3 +35,7 @@ message GetRequest {
 message GetResponse {
   map<string,User> users = 2;
 }
+
+message CreatedEvent {
+  User user = 1;
+}

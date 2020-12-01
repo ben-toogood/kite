@@ -100,5 +100,6 @@ func TestCreate(t *testing.T) {
 		assert.Equal(t, req.FirstName, rsp.User.FirstName)
 		assert.Equal(t, req.LastName, rsp.User.LastName)
 		assert.Equal(t, req.Email, rsp.User.Email)
+
 	})
 }

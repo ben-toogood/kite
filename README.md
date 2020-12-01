@@ -1,11 +1,11 @@
 - web ui (React,Typescript)
 - api (GraphQL, Go)
 
-- auth
+- auth 👨‍💻
 - users ✅
 - posts
-- followers
-- comments
+- followers ✅
+- comments ✅
 - likes
 
 Post

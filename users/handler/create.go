@@ -8,6 +8,7 @@ import (
 	"github.com/ben-toogood/kite/users"
 	"github.com/ben-toogood/kite/users/model"
 	"github.com/lileio/lile/v2/protocopy"
+	"gorm.io/gorm"
 )
 
 // Create a user
@@ -23,14 +24,27 @@ func (u *Users) Create(ctx context.Context, req *users.CreateRequest) (*users.Cr
 		LastName:  req.LastName,
 		Email:     req.Email,
 	}
-	if err := u.DB.Create(&usr).Error; err != nil {
+	rsp := users.CreateResponse{User: &users.User{}}
+	if err := u.DB.Transaction(func(tx *gorm.DB) error {
+		if err := tx.Create(&usr).Error; err != nil {
+			return err
+		}
+
+		// serialize the result
+		if err := protocopy.ToProto(usr, rsp.User); err != nil {
+			return err
+		}
+
+		// publish the event
+		return u.PubSub.Publish(ctx, "users.created", &users.CreatedEvent{User: rsp.User}, false)
+	}); err != nil {
 		return nil, database.TranslateError(err)
 	}
 
-	// serialize the result
-	rsp := users.CreateResponse{User: &users.User{}}
-	if err := protocopy.ToProto(usr, rsp.User); err != nil {
-		return nil, err
-	}
 	return &rsp, nil
 }
+
+// type Users struct {
+// 	m3o.DBHandler
+// 	m3o.PubSubHandler
+// }
