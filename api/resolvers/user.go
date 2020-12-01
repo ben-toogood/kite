@@ -1,6 +1,8 @@
 package resolvers
 
 import (
+	"context"
+
 	"github.com/ben-toogood/kite/users"
 	"github.com/graph-gophers/graphql-go"
 )
@@ -19,4 +21,15 @@ func (u *User) FirstName() string {
 
 func (u *User) LastName() string {
 	return u.u.LastName
+}
+
+func (r *Resolver) User(ctx context.Context, args struct{ ID graphql.ID }) (*User, error) {
+	rsp, err := r.Users.Get(ctx, &users.GetRequest{
+		Ids: []string{string(args.ID)},
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	return &User{u: rsp.Users[string(args.ID)]}, nil
 }
