@@ -1,4 +1,4 @@
-package comments
+package followers
 
 //go:generate go run github.com/maxbrunsfeld/counterfeiter/v6 . UsersServiceClient
 
@@ -10,22 +10,22 @@ import (
 )
 
 const (
-	defaultAddress = "comments:8080"
+	defaultAddress = "followers:8080"
 )
 
 var (
 	once sync.Once
-	cli  CommentsServiceClient
+	cli  FollowersServiceClient
 )
 
-func NewClient() CommentsServiceClient {
+func NewClient() FollowersServiceClient {
 	once.Do(func() {
 		addr := defaultAddress
-		if a := os.Getenv("COMMENTS_ADDRESS"); len(a) > 0 {
+		if a := os.Getenv("FOLLOWERS_ADDRESS"); len(a) > 0 {
 			addr = a
 		}
 		conn, _ := grpc.Dial(addr, grpc.WithInsecure())
-		cli = NewCommentsServiceClient(conn)
+		cli = NewFollowersServiceClient(conn)
 	})
 	return cli
 }
