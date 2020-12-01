@@ -19,7 +19,7 @@ func (u *Users) Get(ctx context.Context, req *users.GetRequest) (*users.GetRespo
 	// query the database
 	var usrs []model.User
 	if err := u.DB.Where("id IN (?)", req.Ids).Find(&usrs).Error; err != nil {
-		return nil, database.TranslateErrors(err)
+		return nil, database.TranslateError(err)
 	}
 
 	// serialize the result

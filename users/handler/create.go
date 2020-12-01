@@ -24,7 +24,7 @@ func (u *Users) Create(ctx context.Context, req *users.CreateRequest) (*users.Cr
 		Email:     req.Email,
 	}
 	if err := u.DB.Create(&usr).Error; err != nil {
-		return nil, database.TranslateErrors(err)
+		return nil, database.TranslateError(err)
 	}
 
 	// serialize the result

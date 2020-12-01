@@ -21,7 +21,7 @@ func (c *Comments) Get(ctx context.Context, req *comments.GetRequest) (*comments
 	var cmts []model.Comment
 	query := c.DB.Where("resource_type = ? AND resource_id IN (?)", req.ResourceType, req.ResourceIds)
 	if err := query.Find(&cmts).Error; err != nil {
-		return nil, database.TranslateErrors(err)
+		return nil, database.TranslateError(err)
 	}
 
 	// group the results by resource_id

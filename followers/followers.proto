@@ -22,7 +22,7 @@ message GetFollowersRequest {
 
 message Resource {
   ResourceType type = 1;
-  ResourceType id = 2;
+  string id = 2;
 }
 
 message GetFollowersResponse {
