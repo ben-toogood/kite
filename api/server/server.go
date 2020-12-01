@@ -28,7 +28,7 @@ func main() {
 		panic(err)
 	}
 
-	schemaFile, err := ioutil.ReadFile("./api/schema.graphql")
+	schemaFile, err := ioutil.ReadFile("./schema.graphql")
 	if err != nil {
 		log.Fatal(err)
 	}

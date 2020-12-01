@@ -35,7 +35,10 @@ func main() {
 		if err != nil {
 			fmt.Println(err)
 		}
+	} else {
+		panic("no GOOGLE_PUBSUB_PROJECT_ID set! 😂")
 	}
+
 	psc := &pubsub.Client{
 		ServiceName: "users",
 		Provider:    ps,
@@ -48,7 +51,7 @@ func main() {
 	if len(os.Getenv("PORT")) > 0 {
 		port = os.Getenv("PORT")
 	}
-	lis, err := net.Listen("tcp", fmt.Sprintf("localhost:%s", port))
+	lis, err := net.Listen("tcp", fmt.Sprintf(":%s", port))
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)
 	}

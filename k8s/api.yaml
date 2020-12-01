@@ -1,0 +1,58 @@
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: api
+  namespace: default
+  labels:
+    name: api
+spec:
+  rules:
+  - host: "api.deploy.wtf"
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: api
+          servicePort: http
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: api
+  namespace: default
+  labels:
+    name: api
+spec:
+  ports:
+  - name: http
+    port: 80
+    targetPort: http
+  selector:
+    name: api
+  type: ClusterIP
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: default
+  name: api
+  labels:
+    name: api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: api
+  template:
+    metadata:
+      labels:
+        name: api
+    spec:
+      containers:
+      - name: kite
+        image: eu.gcr.io/kite-prod-297314/api:99dca7f
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 8080
+          name: http
+

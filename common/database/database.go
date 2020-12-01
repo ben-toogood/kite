@@ -3,6 +3,7 @@ package database
 import (
 	"context"
 	"errors"
+	"fmt"
 	"os"
 	"strings"
 	"sync"
@@ -160,9 +161,12 @@ func TranslateError(err error) error {
 	if err == gorm.ErrRecordNotFound {
 		return ErrNotFound
 	}
+
 	if strings.Contains(err.Error(), "unique constraint") {
 		return ErrDuplicate
 	}
+
+	fmt.Printf("Err DB %s\n", err.Error())
 
 	return ErrDatabase
 }

@@ -1,0 +1,14 @@
+FROM golang:alpine AS build-env
+WORKDIR /kite
+RUN apk update && apk upgrade && \
+    apk add --no-cache bash git openssh
+COPY go.mod /kite/go.mod
+COPY go.sum /kite/go.sum
+COPY . /kite
+RUN mkdir -p /kite/builds
+RUN CGO_ENABLED=0 GOOS=linux go build -ldflags="-w -s" -o /kite/builds/users /kite/users/cmd/users
+
+FROM scratch
+COPY --from=build-env /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
+COPY --from=build-env /kite/builds/users /
+ENTRYPOINT ["/users"]

@@ -27,7 +27,7 @@ func (u *Users) Create(ctx context.Context, req *users.CreateRequest) (*users.Cr
 	rsp := users.CreateResponse{User: &users.User{}}
 	if err := u.DB.Transaction(func(tx *gorm.DB) error {
 		if err := tx.Create(&usr).Error; err != nil {
-			return err
+			return database.TranslateError(err)
 		}
 
 		// serialize the result
@@ -38,7 +38,7 @@ func (u *Users) Create(ctx context.Context, req *users.CreateRequest) (*users.Cr
 		// publish the event
 		return u.PubSub.Publish(ctx, "users.created", &users.CreatedEvent{User: rsp.User}, false)
 	}); err != nil {
-		return nil, database.TranslateError(err)
+		return nil, err
 	}
 
 	return &rsp, nil
