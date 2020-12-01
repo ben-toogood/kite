@@ -85,8 +85,6 @@ func connect(connString string, poolSize int) (*gorm.DB, error) {
 	if err != nil {
 		return nil, err
 	}
-
-	// conn.Debug()
 	return conn, nil
 }
 
@@ -152,9 +150,9 @@ func ResetDB() error {
 // 	return tx.Commit().Error
 // }
 
-// TranslateErrors takes a pointer to a gorm database, gets the errors and transforms
+// TranslateError takes a pointer to a gorm database, gets the errors and transforms
 // them into a single micro error which can be returned safely to a handler.
-func TranslateErrors(err error) error {
+func TranslateError(err error) error {
 	if err == nil {
 		return nil
 	}

@@ -18,7 +18,7 @@ func (c *Comments) Delete(ctx context.Context, req *comments.DeleteRequest) (*co
 
 	// delete the comment
 	if err := c.DB.Delete(&model.Comment{ID: req.Id}).Error; err != nil {
-		return nil, database.TranslateErrors(err)
+		return nil, database.TranslateError(err)
 	}
 
 	return &comments.DeleteResponse{}, nil

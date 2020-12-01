@@ -25,7 +25,7 @@ func (c *Comments) Create(ctx context.Context, req *comments.CreateRequest) (*co
 		Message:      req.Message,
 	}
 	if err := c.DB.Create(&cmt).Error; err != nil {
-		return nil, database.TranslateErrors(err)
+		return nil, database.TranslateError(err)
 	}
 
 	// serialize the result
