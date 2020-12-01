@@ -13,7 +13,7 @@ type SignupInput struct {
 }
 
 func (r *Resolver) Signup(ctx context.Context, input SignupInput) (*User, error) {
-	rsp, err := users.NewClient().Create(ctx, &users.CreateRequest{
+	rsp, err := r.Users.Create(ctx, &users.CreateRequest{
 		Email:     input.Email,
 		FirstName: input.FirstName,
 		LastName:  input.LastName,

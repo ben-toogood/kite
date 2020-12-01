@@ -5,7 +5,7 @@ go 1.15
 require (
 	github.com/99designs/gqlgen v0.13.0
 	github.com/cloudflare/cfssl v1.5.0
-	github.com/friendsofgo/graphiql v0.2.2 // indirect
+	github.com/friendsofgo/graphiql v0.2.2
 	github.com/go-ozzo/ozzo-validation/v4 v4.3.0
 	github.com/gofrs/uuid v3.3.0+incompatible // indirect
 	github.com/golang/protobuf v1.4.3
@@ -21,9 +21,11 @@ require (
 	github.com/niemeyer/pretty v0.0.0-20200227124842-a10e7caefd8e // indirect
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/prometheus/common v0.6.0
+	github.com/sanity-io/litter v1.2.0
 	github.com/segmentio/ksuid v1.0.3
-	github.com/sirupsen/logrus v1.7.0 // indirect
+	github.com/sirupsen/logrus v1.7.0
 	github.com/stretchr/testify v1.6.1
+	github.com/tj/assert v0.0.3
 	github.com/vektah/gqlparser/v2 v2.1.0
 	golang.org/x/net v0.0.0-20201029221708-28c70e62bb1d // indirect
 	golang.org/x/sys v0.0.0-20201119102817-f84b799fce68 // indirect
