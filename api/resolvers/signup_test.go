@@ -20,8 +20,7 @@ mutation {
 func TestSignup(t *testing.T) {
 	u := &users.User{Id: "usr_ksjdbfks7gskduf", FirstName: "Alex"}
 	testResolver.Users.(*usersfakes.FakeUsersServiceClient).CreateReturns(
-		&users.CreateResponse{User: u},
-		nil,
+		&users.CreateResponse{User: u}, nil,
 	)
 
 	res := struct {
