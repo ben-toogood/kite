@@ -1,4 +1,4 @@
-package handler
+package server
 
 import (
 	"context"
@@ -10,7 +10,7 @@ import (
 )
 
 func TestGet(t *testing.T) {
-	h := testHandler(t)
+	h := testServer(t)
 
 	t.Run("MissingIDs", func(t *testing.T) {
 		rsp, err := h.Get(context.TODO(), &users.GetRequest{})

@@ -3,6 +3,11 @@ syntax = "proto3";
 package users;
 option go_package = "github.com/ben-toogood/kite/users";
 import "google/protobuf/timestamp.proto";
+import "google/protobuf/descriptor.proto";
+
+extend google.protobuf.MessageOptions {
+  repeated string topic = 50000;
+}
 
 service UsersService {
   rpc Create (CreateRequest) returns (CreateResponse);
@@ -16,6 +21,8 @@ message User {
   string email = 4;
   google.protobuf.Timestamp created_at = 5;
   google.protobuf.Timestamp updated_at = 6;
+
+  option (topic) = 'created';
 }
 
 message CreateRequest {
@@ -34,8 +41,4 @@ message GetRequest {
 
 message GetResponse {
   map<string,User> users = 2;
-}
-
-message CreatedEvent {
-  User user = 1;
 }

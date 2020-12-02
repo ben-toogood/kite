@@ -3,11 +3,12 @@ package database
 import (
 	"context"
 	"errors"
+	"fmt"
 	"os"
 	"strings"
 	"sync"
 
-	"github.com/prometheus/common/log"
+	"github.com/sirupsen/logrus"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
@@ -55,7 +56,7 @@ func GetDBFromPool(ctx context.Context) (*gorm.DB, error) {
 		pool = defaultPoolName
 	}
 	if c := conns[pool]; c != nil {
-		return c, nil
+		return SetSpanToGorm(ctx, c), nil
 	}
 	connString := defaultConnString
 	if os.Getenv("POSTGRES_URL") != "" {
@@ -67,12 +68,14 @@ func GetDBFromPool(ctx context.Context) (*gorm.DB, error) {
 	if poolSize, ok = poolSizes[pool]; !ok {
 		poolSize = 10
 	}
-	log.Debugf("Connecting to PG at %s for pool %s", connString, pool)
+	logrus.Debugf("Connecting to PG at %s for pool %s", connString, pool)
 	var err error
 	conn, err := connect(connString, poolSize)
 	if err != nil {
 		return nil, err
 	}
+
+	conn = SetSpanToGorm(ctx, conn)
 	conns[pool] = conn
 	return conns[pool], nil
 }
@@ -85,6 +88,8 @@ func connect(connString string, poolSize int) (*gorm.DB, error) {
 	if err != nil {
 		return nil, err
 	}
+
+	AddGormCallbacks(conn)
 	return conn, nil
 }
 
@@ -160,9 +165,12 @@ func TranslateError(err error) error {
 	if err == gorm.ErrRecordNotFound {
 		return ErrNotFound
 	}
+
 	if strings.Contains(err.Error(), "unique constraint") {
 		return ErrDuplicate
 	}
+
+	fmt.Printf("Err DB %s\n", err.Error())
 
 	return ErrDatabase
 }

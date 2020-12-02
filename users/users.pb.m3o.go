@@ -6,6 +6,9 @@ import (
 	"os"
 	sync "sync"
 
+	"github.com/grpc-ecosystem/grpc-opentracing/go/otgrpc"
+	"github.com/opentracing/opentracing-go"
+
 	grpc "google.golang.org/grpc"
 )
 
@@ -24,7 +27,8 @@ func NewClient() UsersServiceClient {
 		if a := os.Getenv("USERS_ADDRESS"); len(a) > 0 {
 			addr = a
 		}
-		conn, _ := grpc.Dial(addr, grpc.WithInsecure())
+		conn, _ := grpc.Dial(addr, grpc.WithInsecure(), grpc.WithUnaryInterceptor(
+			otgrpc.OpenTracingClientInterceptor(opentracing.GlobalTracer())))
 		cli = NewUsersServiceClient(conn)
 	})
 	return cli
