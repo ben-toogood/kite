@@ -7,13 +7,13 @@ metadata:
     name: api
 spec:
   rules:
-  - host: "api.deploy.wtf"
-    http:
-      paths:
-      - path: /
-        backend:
-          serviceName: api
-          servicePort: http
+    - host: "api.deploy.wtf"
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: api
+              servicePort: http
 ---
 apiVersion: v1
 kind: Service
@@ -24,9 +24,9 @@ metadata:
     name: api
 spec:
   ports:
-  - name: http
-    port: 80
-    targetPort: http
+    - name: http
+      port: 80
+      targetPort: http
   selector:
     name: api
   type: ClusterIP
@@ -49,21 +49,20 @@ spec:
         name: api
     spec:
       containers:
-      - name: kite
-        image: eu.gcr.io/kite-prod-297314/api:2
-        imagePullPolicy: IfNotPresent
-        env:
-        - name: JAEGER_SERVICE_NAME
-          value: api
-        - name: JAEGER_AGENT_HOST
-          value: jaeger-agent
-        - name: JAEGER_AGENT_PORT
-          value: "6831"
-        - name: JAEGER_SAMPLER_TYPE
-          value: const
-        - name: JAEGER_SAMPLER_PARAM
-          value: "1"
-        ports:
-        - containerPort: 8080
-          name: http
-
+        - name: kite
+          image: eu.gcr.io/kite-prod-297314/api:2
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: JAEGER_SERVICE_NAME
+              value: api
+            - name: JAEGER_AGENT_HOST
+              value: jaeger-agent
+            - name: JAEGER_AGENT_PORT
+              value: "6831"
+            - name: JAEGER_SAMPLER_TYPE
+              value: const
+            - name: JAEGER_SAMPLER_PARAM
+              value: "1"
+          ports:
+            - containerPort: 8080
+              name: http

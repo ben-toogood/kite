@@ -1,35 +1,35 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: users
+  name: auth
   namespace: default
   labels:
-    name: users
+    name: auth
 spec:
   ports:
     - name: grpc
       port: 8080
       targetPort: grpc
   selector:
-    name: users
+    name: auth
   type: ClusterIP
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   namespace: default
-  name: users
+  name: auth
   labels:
-    name: users
+    name: auth
 spec:
   replicas: 1
   selector:
     matchLabels:
-      name: users
+      name: auth
   template:
     metadata:
       labels:
-        name: users
+        name: auth
     spec:
       containers:
         - name: kite
@@ -37,14 +37,21 @@ spec:
             - name: POSTGRES_URL
               valueFrom:
                 secretKeyRef:
-                  name: users-postgres
+                  name: auth-postgres
                   key: POSTGRES_URL
+            - name: SENDGRID_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: sendgrid
+                  key: apikey
+            - name: KITE_WEB_URL
+              value: "http://deploy.wtf"
             - name: GOOGLE_APPLICATION_CREDENTIALS
               value: /pubsub/creds.json
             - name: GOOGLE_PUBSUB_PROJECT_ID
               value: kite-prod-297314
             - name: JAEGER_SERVICE_NAME
-              value: users
+              value: auth
             - name: JAEGER_AGENT_HOST
               value: jaeger-agent
             - name: JAEGER_AGENT_PORT
@@ -57,7 +64,7 @@ spec:
             - name: pubsub
               mountPath: "/pubsub"
               readOnly: true
-          image: eu.gcr.io/kite-prod-297314/users:18
+          image: eu.gcr.io/kite-prod-297314/auth:18
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8080

@@ -7,10 +7,10 @@ metadata:
     name: trace
 spec:
   rules:
-  - host: "trace.deploy.wtf"
-    http:
-      paths:
-      - path: /
-        backend:
-          serviceName: jaeger-query
-          servicePort: query
+    - host: "trace.deploy.wtf"
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: jaeger-query
+              servicePort: query
