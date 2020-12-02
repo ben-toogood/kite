@@ -1,4 +1,4 @@
-package handler
+package server
 
 import (
 	"context"
@@ -12,7 +12,7 @@ import (
 )
 
 func TestCreate(t *testing.T) {
-	h := testHandler(t)
+	h := testServer(t)
 
 	t.Run("MissingFirstName", func(t *testing.T) {
 		rsp, err := h.Create(context.TODO(), &users.CreateRequest{

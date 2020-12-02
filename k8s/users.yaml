@@ -43,11 +43,21 @@ spec:
           value: /pubsub/creds.json
         - name: GOOGLE_PUBSUB_PROJECT_ID
           value: kite-prod-297314
+        - name: JAEGER_SERVICE_NAME
+          value: users
+        - name: JAEGER_AGENT_HOST
+          value: jaeger-agent
+        - name: JAEGER_AGENT_PORT
+          value: "6831"
+        - name: JAEGER_SAMPLER_TYPE
+          value: const
+        - name: JAEGER_SAMPLER_PARAM
+          value: "1"
         volumeMounts:
         - name: pubsub
           mountPath: "/pubsub"
           readOnly: true
-        image: eu.gcr.io/kite-prod-297314/users:14
+        image: eu.gcr.io/kite-prod-297314/users:18
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 8080

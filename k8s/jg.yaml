@@ -1,0 +1,16 @@
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: trace
+  namespace: default
+  labels:
+    name: trace
+spec:
+  rules:
+  - host: "trace.deploy.wtf"
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: jaeger-query
+          servicePort: query
