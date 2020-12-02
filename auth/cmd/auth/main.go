@@ -9,11 +9,13 @@ import (
 	"os"
 
 	"github.com/ben-toogood/kite/auth"
+	"github.com/ben-toogood/kite/auth/handler"
 	"github.com/ben-toogood/kite/auth/model"
 	"github.com/ben-toogood/kite/common/database"
 	"github.com/lileio/pubsub/v2"
 	"github.com/lileio/pubsub/v2/middleware/defaults"
 	"github.com/lileio/pubsub/v2/providers/google"
+	"github.com/sendgrid/sendgrid-go"
 	"google.golang.org/grpc"
 )
 
@@ -53,7 +55,11 @@ func main() {
 	}
 	var opts []grpc.ServerOption
 	grpcServer := grpc.NewServer(opts...)
-	auth.RegisterAuthServiceServer(grpcServer, &handler.auth{DB: db, PubSub: psc})
+	auth.RegisterAuthServiceServer(grpcServer, &handler.Auth{
+		DB:       db,
+		PubSub:   psc,
+		Sendgrid: sendgrid.NewSendClient(os.Getenv("SENDGRID_API_KEY")),
+	})
 	fmt.Printf("Starting server on :%v\n", port)
 	grpcServer.Serve(lis)
 }

@@ -43,8 +43,3 @@ func (u *Users) Create(ctx context.Context, req *users.CreateRequest) (*users.Cr
 
 	return &rsp, nil
 }
-
-// type Users struct {
-// 	m3o.DBHandler
-// 	m3o.PubSubHandler
-// }

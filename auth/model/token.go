@@ -3,8 +3,9 @@ package model
 import "time"
 
 type Token struct {
-	UserID       string
-	AccessToken  string
-	RefreshToken string
-	ExpiresAt    time.Time
+	UserID             string `pb:"ignore=true"`
+	AccessToken        string
+	RefreshToken       string
+	AccessTokenExpiry  time.Time
+	RefreshTokenExpiry time.Time
 }
