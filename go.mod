@@ -6,7 +6,9 @@ require (
 	github.com/HdrHistogram/hdrhistogram-go v1.0.1 // indirect
 	github.com/asaskevich/govalidator v0.0.0-20200907205600-7a23bdc65eef // indirect
 	github.com/cloudflare/cfssl v1.5.0
+	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/friendsofgo/graphiql v0.2.2
+	github.com/fullstorydev/grpcurl v1.7.0 // indirect
 	github.com/go-ozzo/ozzo-validation/v4 v4.3.0
 	github.com/gofrs/uuid v3.3.0+incompatible // indirect
 	github.com/golang/protobuf v1.4.3
@@ -22,6 +24,8 @@ require (
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/prometheus/common v0.6.0 // indirect
 	github.com/segmentio/ksuid v1.0.3
+	github.com/sendgrid/rest v2.6.2+incompatible
+	github.com/sendgrid/sendgrid-go v3.7.2+incompatible
 	github.com/sirupsen/logrus v1.7.0
 	github.com/stretchr/testify v1.6.1
 	github.com/tj/assert v0.0.3

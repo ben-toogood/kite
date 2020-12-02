@@ -8,7 +8,7 @@ service AuthService {
   // Login sends an access token to the user via email
   rpc Login(LoginRequest) returns (LoginResponse);
   // Refresh an access token
-  rpc Refesh(RefeshRequest) returns (RefeshResponse);
+  rpc Refresh(RefreshRequest) returns (RefreshResponse);
   // Revoke the access tokens for a user
   rpc Revoke(RevokeRequest) returns (RevokeResponse);
   // Inspect an access token
@@ -22,11 +22,11 @@ message Token {
   google.protobuf.Timestamp refresh_token_expiry = 4;
 }
 
-message RefeshRequest {
+message RefreshRequest {
   string refresh_token = 1;
 }
 
-message RefeshResponse {
+message RefreshResponse {
   Token token = 1;
 }
 
@@ -38,6 +38,7 @@ message RevokeResponse {}
 
 message InspectRequest {
   string access_token = 1;
+  string refresh_token = 2;
 }
 
 message InspectResponse {
