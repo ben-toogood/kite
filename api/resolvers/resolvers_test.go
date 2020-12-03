@@ -11,6 +11,7 @@ import (
 	"testing"
 
 	"github.com/ben-toogood/kite/api/resolvers"
+	"github.com/ben-toogood/kite/auth/authfakes"
 	"github.com/ben-toogood/kite/comments/commentsfakes"
 	"github.com/ben-toogood/kite/users/usersfakes"
 	"github.com/graph-gophers/graphql-go"
@@ -23,6 +24,7 @@ var schema *graphql.Schema
 var testResolver = &resolvers.Resolver{
 	Users:    &usersfakes.FakeUsersServiceClient{},
 	Comments: &commentsfakes.FakeCommentsServiceClient{},
+	Auth:     &authfakes.FakeAuthServiceClient{},
 }
 
 type Test struct {

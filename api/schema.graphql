@@ -4,8 +4,15 @@ type User {
   lastName: String!
 }
 
+type Tokens {
+  accessToken: String!
+  refreshToken: String!
+}
+
 type Mutation {
   signup(firstName: String!, lastName: String!, email: String!): User!
+  # refreshTokens(accessToken: String!, refreshToken: String!): Tokens
+  login(email: String!): Boolean
 }
 
 type Query {
