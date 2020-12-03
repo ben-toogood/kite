@@ -19,8 +19,7 @@ func ContextWithLoaders(r *Resolver, ctx context.Context) context.Context {
 
 func WithLoaders(res *Resolver, next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		r = r.WithContext(ContextWithLoaders(res, r.Context()))
-		next.ServeHTTP(w, r)
+		next.ServeHTTP(w, r.Clone(ContextWithLoaders(res, r.Context())))
 	})
 }
 

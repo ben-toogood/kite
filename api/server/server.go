@@ -13,6 +13,7 @@ import (
 	"github.com/friendsofgo/graphiql"
 	"github.com/graph-gophers/graphql-go"
 	"github.com/graph-gophers/graphql-go/relay"
+	"github.com/opentracing-contrib/go-stdlib/nethttp"
 	"github.com/opentracing/opentracing-go"
 	"github.com/sirupsen/logrus"
 	jaegercfg "github.com/uber/jaeger-client-go/config"
@@ -62,8 +63,8 @@ func main() {
 	opts := []graphql.SchemaOpt{graphql.UseFieldResolvers(), graphql.MaxParallelism(20)}
 	schema := graphql.MustParseSchema(string(schemaFile), r, opts...)
 
-	http.Handle("/", resolvers.WithLoaders(r, graphiqlHandler))
-	http.Handle("/graphql", &relay.Handler{Schema: schema})
+	http.Handle("/", graphiqlHandler)
+	http.Handle("/graphql", nethttp.Middleware(tracer, resolvers.WithLoaders(r, &relay.Handler{Schema: schema})))
 
 	logrus.Info("GraphQL API started on :" + port)
 	log.Fatal(http.ListenAndServe(":"+port, nil))

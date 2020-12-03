@@ -11,7 +11,7 @@ import (
 func NewUserLoaderWithCtx(r *Resolver, ctx context.Context) *UserLoader {
 	return NewUserLoader(
 		UserLoaderConfig{
-			Wait:     2 * time.Millisecond,
+			Wait:     1 * time.Millisecond,
 			MaxBatch: 100,
 			Fetch: func(keys []string) ([]*User, []error) {
 				us := make([]*User, len(keys))
