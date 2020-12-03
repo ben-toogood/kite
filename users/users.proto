@@ -12,6 +12,7 @@ extend google.protobuf.MessageOptions {
 service UsersService {
   rpc Create (CreateRequest) returns (CreateResponse);
   rpc Get (GetRequest) returns (GetResponse);
+  rpc GetByEmail (GetByEmailRequest) returns (GetByEmailResponse);
 }
 
 message User {
@@ -41,4 +42,12 @@ message GetRequest {
 
 message GetResponse {
   map<string,User> users = 2;
+}
+
+message GetByEmailRequest {
+  string email = 1;
+}
+
+message GetByEmailResponse {
+  User user = 1;
 }

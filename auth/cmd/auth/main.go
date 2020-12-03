@@ -16,6 +16,7 @@ import (
 	"github.com/ben-toogood/kite/auth/model"
 	"github.com/ben-toogood/kite/auth/subscribers"
 	"github.com/ben-toogood/kite/common/database"
+	"github.com/ben-toogood/kite/users"
 	"github.com/form3tech-oss/jwt-go"
 	"github.com/grpc-ecosystem/grpc-opentracing/go/otgrpc"
 	"github.com/lileio/pubsub/v2"
@@ -107,6 +108,7 @@ func main() {
 	)
 
 	h := &handler.Auth{
+		Users:      users.NewClient(),
 		DB:         db,
 		PubSub:     psc,
 		PrivateKey: key,

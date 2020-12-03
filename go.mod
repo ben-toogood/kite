@@ -25,6 +25,7 @@ require (
 	github.com/opentracing/opentracing-go v1.1.0
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/prometheus/common v0.6.0 // indirect
+	github.com/sanity-io/litter v1.2.0
 	github.com/segmentio/ksuid v1.0.3
 	github.com/sendgrid/rest v2.6.2+incompatible
 	github.com/sendgrid/sendgrid-go v3.7.2+incompatible

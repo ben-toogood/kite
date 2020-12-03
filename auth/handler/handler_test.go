@@ -10,6 +10,7 @@ import (
 
 	"github.com/ben-toogood/kite/auth/model"
 	"github.com/ben-toogood/kite/common/database"
+	"github.com/ben-toogood/kite/users/usersfakes"
 	"github.com/lileio/pubsub/v2"
 	"github.com/lileio/pubsub/v2/middleware/defaults"
 	sg "github.com/sendgrid/rest"
@@ -46,6 +47,7 @@ func testHandler(t *testing.T) *Auth {
 	assert.NoErrorf(t, err, "Error generating public key")
 
 	return &Auth{
+		Users:      &usersfakes.FakeUsersServiceClient{},
 		DB:         db,
 		PubSub:     psc,
 		PrivateKey: key,

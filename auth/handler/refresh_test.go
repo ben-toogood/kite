@@ -6,7 +6,8 @@ import (
 
 	"github.com/ben-toogood/kite/auth"
 	"github.com/ben-toogood/kite/common/validations"
-	"github.com/segmentio/ksuid"
+	"github.com/ben-toogood/kite/users"
+	"github.com/ben-toogood/kite/users/usersfakes"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -25,11 +26,13 @@ func TestRefresh(t *testing.T) {
 
 	t.Run("Valid", func(t *testing.T) {
 		h := testHandler(t)
+		u := &users.User{Id: "usr_ksjdbfks7gskduf", FirstName: "Alex", Email: "a@test.com"}
+		h.Users.(*usersfakes.FakeUsersServiceClient).GetByEmailReturns(
+			&users.GetByEmailResponse{User: u}, nil,
+		)
 
-		// generate an access token
-		uid := ksuid.New().String()
 		rsp, err := h.Login(context.TODO(), &auth.LoginRequest{
-			UserId: uid, Email: "johndoe@gmail.com",
+			Email: "johndoe@gmail.com",
 		})
 		assert.NotNil(t, rsp)
 		assert.NoError(t, err)

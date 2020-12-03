@@ -7,7 +7,6 @@ import (
 
 func (a *LoginRequest) Validate() error {
 	return validation.ValidateStruct(a,
-		validation.Field(&a.UserId, validation.Required, validation.Length(1, 255)),
 		validation.Field(&a.Email, validation.Required, is.Email),
 	)
 }

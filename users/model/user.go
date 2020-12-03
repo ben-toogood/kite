@@ -61,3 +61,17 @@ func Get(ctx context.Context, ids []string) (map[string]*User, error) {
 
 	return umap, nil
 }
+
+func GetByEmail(ctx context.Context, email string) (*User, error) {
+	db, err := database.GetDB(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	var u User
+	if err := db.Where("email = ?", email).First(&u).Error; err != nil {
+		return nil, database.TranslateError(err)
+	}
+
+	return &u, nil
+}

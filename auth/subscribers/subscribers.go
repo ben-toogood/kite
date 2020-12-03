@@ -18,6 +18,6 @@ func (s *AuthServiceSubscriber) Setup(c *pubsub.Client) {
 }
 
 func (s *AuthServiceSubscriber) UserCreated(ctx context.Context, u *users.User, _ *pubsub.Msg) error {
-	_, err := s.Handler.Login(ctx, &auth.LoginRequest{UserId: u.Id, Email: u.Email})
+	_, err := s.Handler.Login(ctx, &auth.LoginRequest{Email: u.Email})
 	return err
 }

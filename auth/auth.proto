@@ -46,7 +46,7 @@ message InspectResponse {
 }
 
 message LoginRequest {
-  string user_id = 1;
+  reserved 1;
   string email = 2;
 }
 

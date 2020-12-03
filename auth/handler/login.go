@@ -11,8 +11,11 @@ import (
 	"github.com/ben-toogood/kite/auth/model"
 	"github.com/ben-toogood/kite/common/database"
 	"github.com/ben-toogood/kite/common/validations"
+	"github.com/ben-toogood/kite/users"
 	"github.com/dgrijalva/jwt-go"
 	"github.com/sendgrid/sendgrid-go/helpers/mail"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 )
 
 // Login sends an access token to the users email
@@ -20,6 +23,15 @@ func (a *Auth) Login(ctx context.Context, req *auth.LoginRequest) (*auth.LoginRe
 	// validate the request
 	if err := req.Validate(); err != nil {
 		return nil, validations.NewError(ctx, err)
+	}
+
+	u, err := a.Users.GetByEmail(ctx, &users.GetByEmailRequest{Email: req.Email})
+	if status.Code(err) == codes.NotFound {
+		return &auth.LoginResponse{}, nil
+	}
+
+	if err != nil {
+		return nil, err
 	}
 
 	// calculate the expiry
@@ -31,13 +43,13 @@ func (a *Auth) Login(ctx context.Context, req *auth.LoginRequest) (*auth.LoginRe
 		Issuer:    issuer,
 		ExpiresAt: accessTokenExpiry.Unix(),
 		IssuedAt:  time.Now().Unix(),
-		Subject:   req.UserId,
+		Subject:   u.User.Id,
 	})
 	rt := jwt.NewWithClaims(jwt.SigningMethodRS256, jwt.StandardClaims{
 		Issuer:    issuer,
 		ExpiresAt: refreshTokenExpiry.Unix(),
 		IssuedAt:  time.Now().Unix(),
-		Subject:   req.UserId,
+		Subject:   u.User.Id,
 	})
 
 	// sign the tokens
@@ -52,7 +64,7 @@ func (a *Auth) Login(ctx context.Context, req *auth.LoginRequest) (*auth.LoginRe
 
 	// write the token to the store
 	tok := &model.Token{
-		UserID:             req.UserId,
+		UserID:             u.User.Id,
 		AccessToken:        accessToken,
 		AccessTokenExpiry:  accessTokenExpiry,
 		RefreshToken:       refreshToken,

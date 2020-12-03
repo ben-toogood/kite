@@ -2,16 +2,14 @@ package handler
 
 import (
 	"context"
-	"encoding/base64"
-	"encoding/json"
-	"strings"
 	"testing"
 
 	"github.com/dgrijalva/jwt-go"
 
 	"github.com/ben-toogood/kite/auth"
 	"github.com/ben-toogood/kite/common/validations"
-	"github.com/segmentio/ksuid"
+	"github.com/ben-toogood/kite/users"
+	"github.com/ben-toogood/kite/users/usersfakes"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -25,16 +23,19 @@ func TestLogin(t *testing.T) {
 		for _, e := range validations.ExtractErrors(err) {
 			fields[e.Field] = true
 		}
-		assert.True(t, fields["user_id"])
 		assert.True(t, fields["email"])
 	})
 
 	t.Run("Valid", func(t *testing.T) {
 		h := testHandler(t)
-		uid := ksuid.New().String()
+
+		u := &users.User{Id: "usr_ksjdbfks7gskduf", FirstName: "Alex", Email: "a@test.com"}
+		h.Users.(*usersfakes.FakeUsersServiceClient).GetByEmailReturns(
+			&users.GetByEmailResponse{User: u}, nil,
+		)
+
 		rsp, err := h.Login(context.TODO(), &auth.LoginRequest{
-			UserId: uid,
-			Email:  "johndoe@gmail.com",
+			Email: u.Email,
 		})
 		assert.NotNil(t, rsp)
 		assert.NoError(t, err)
@@ -44,16 +45,11 @@ func TestLogin(t *testing.T) {
 		j, err := getJWTFromTestHandlerEmail(t, h)
 		assert.NoError(t, err)
 
-		// get the claims from the JWT
-		data, err := base64.StdEncoding.DecodeString(strings.Split(j, ".")[1])
-		assert.NoError(t, err)
-		var payload jwt.MapClaims
-		err = json.Unmarshal(data, &payload)
-		assert.NoError(t, err)
-
-		// check the payload is correct
-		assert.Equal(t, "kite", payload["iss"])
-		assert.Equal(t, uid, payload["sub"])
+		jwt.Parse(j, func(tk *jwt.Token) (interface{}, error) {
+			assert.Equal(t, "kite", tk.Claims.(jwt.MapClaims)["iss"])
+			assert.Equal(t, u.Id, tk.Claims.(jwt.MapClaims)["sub"])
+			return nil, nil
+		})
 		return
 	})
 }

@@ -4,6 +4,7 @@ import (
 	"crypto/rsa"
 	"time"
 
+	"github.com/ben-toogood/kite/users"
 	"github.com/lileio/pubsub/v2"
 	sg "github.com/sendgrid/rest"
 	"github.com/sendgrid/sendgrid-go/helpers/mail"
@@ -23,6 +24,7 @@ type sendgridClient interface {
 
 // Auth implements the auth handler interface
 type Auth struct {
+	Users      users.UsersServiceClient
 	DB         *gorm.DB
 	PubSub     *pubsub.Client
 	PrivateKey *rsa.PrivateKey

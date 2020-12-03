@@ -12,3 +12,9 @@ func (a *CreateRequest) Validate() error {
 		validation.Field(&a.LastName, validation.Required, validation.Length(1, 255)),
 	)
 }
+
+func (a *GetByEmailRequest) Validate() error {
+	return validation.ValidateStruct(a,
+		validation.Field(&a.Email, validation.Required, is.Email),
+	)
+}

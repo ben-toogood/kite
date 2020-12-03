@@ -40,6 +40,21 @@ type FakeUsersServiceClient struct {
 		result1 *users.GetResponse
 		result2 error
 	}
+	GetByEmailStub        func(context.Context, *users.GetByEmailRequest, ...grpc.CallOption) (*users.GetByEmailResponse, error)
+	getByEmailMutex       sync.RWMutex
+	getByEmailArgsForCall []struct {
+		arg1 context.Context
+		arg2 *users.GetByEmailRequest
+		arg3 []grpc.CallOption
+	}
+	getByEmailReturns struct {
+		result1 *users.GetByEmailResponse
+		result2 error
+	}
+	getByEmailReturnsOnCall map[int]struct {
+		result1 *users.GetByEmailResponse
+		result2 error
+	}
 	invocations      map[string][][]interface{}
 	invocationsMutex sync.RWMutex
 }
@@ -176,6 +191,72 @@ func (fake *FakeUsersServiceClient) GetReturnsOnCall(i int, result1 *users.GetRe
 	}{result1, result2}
 }
 
+func (fake *FakeUsersServiceClient) GetByEmail(arg1 context.Context, arg2 *users.GetByEmailRequest, arg3 ...grpc.CallOption) (*users.GetByEmailResponse, error) {
+	fake.getByEmailMutex.Lock()
+	ret, specificReturn := fake.getByEmailReturnsOnCall[len(fake.getByEmailArgsForCall)]
+	fake.getByEmailArgsForCall = append(fake.getByEmailArgsForCall, struct {
+		arg1 context.Context
+		arg2 *users.GetByEmailRequest
+		arg3 []grpc.CallOption
+	}{arg1, arg2, arg3})
+	stub := fake.GetByEmailStub
+	fakeReturns := fake.getByEmailReturns
+	fake.recordInvocation("GetByEmail", []interface{}{arg1, arg2, arg3})
+	fake.getByEmailMutex.Unlock()
+	if stub != nil {
+		return stub(arg1, arg2, arg3...)
+	}
+	if specificReturn {
+		return ret.result1, ret.result2
+	}
+	return fakeReturns.result1, fakeReturns.result2
+}
+
+func (fake *FakeUsersServiceClient) GetByEmailCallCount() int {
+	fake.getByEmailMutex.RLock()
+	defer fake.getByEmailMutex.RUnlock()
+	return len(fake.getByEmailArgsForCall)
+}
+
+func (fake *FakeUsersServiceClient) GetByEmailCalls(stub func(context.Context, *users.GetByEmailRequest, ...grpc.CallOption) (*users.GetByEmailResponse, error)) {
+	fake.getByEmailMutex.Lock()
+	defer fake.getByEmailMutex.Unlock()
+	fake.GetByEmailStub = stub
+}
+
+func (fake *FakeUsersServiceClient) GetByEmailArgsForCall(i int) (context.Context, *users.GetByEmailRequest, []grpc.CallOption) {
+	fake.getByEmailMutex.RLock()
+	defer fake.getByEmailMutex.RUnlock()
+	argsForCall := fake.getByEmailArgsForCall[i]
+	return argsForCall.arg1, argsForCall.arg2, argsForCall.arg3
+}
+
+func (fake *FakeUsersServiceClient) GetByEmailReturns(result1 *users.GetByEmailResponse, result2 error) {
+	fake.getByEmailMutex.Lock()
+	defer fake.getByEmailMutex.Unlock()
+	fake.GetByEmailStub = nil
+	fake.getByEmailReturns = struct {
+		result1 *users.GetByEmailResponse
+		result2 error
+	}{result1, result2}
+}
+
+func (fake *FakeUsersServiceClient) GetByEmailReturnsOnCall(i int, result1 *users.GetByEmailResponse, result2 error) {
+	fake.getByEmailMutex.Lock()
+	defer fake.getByEmailMutex.Unlock()
+	fake.GetByEmailStub = nil
+	if fake.getByEmailReturnsOnCall == nil {
+		fake.getByEmailReturnsOnCall = make(map[int]struct {
+			result1 *users.GetByEmailResponse
+			result2 error
+		})
+	}
+	fake.getByEmailReturnsOnCall[i] = struct {
+		result1 *users.GetByEmailResponse
+		result2 error
+	}{result1, result2}
+}
+
 func (fake *FakeUsersServiceClient) Invocations() map[string][][]interface{} {
 	fake.invocationsMutex.RLock()
 	defer fake.invocationsMutex.RUnlock()
@@ -183,6 +264,8 @@ func (fake *FakeUsersServiceClient) Invocations() map[string][][]interface{} {
 	defer fake.createMutex.RUnlock()
 	fake.getMutex.RLock()
 	defer fake.getMutex.RUnlock()
+	fake.getByEmailMutex.RLock()
+	defer fake.getByEmailMutex.RUnlock()
 	copiedInvocations := map[string][][]interface{}{}
 	for key, value := range fake.invocations {
 		copiedInvocations[key] = value

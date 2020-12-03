@@ -166,6 +166,8 @@ func TranslateError(err error) error {
 		return ErrNotFound
 	}
 
+	fmt.Printf("err = %+v\n", err)
+
 	if strings.Contains(err.Error(), "unique constraint") {
 		return ErrDuplicate
 	}
