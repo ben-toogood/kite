@@ -7,8 +7,8 @@ import (
 )
 
 type Like struct {
-	ResourceID   string
-	ResourceType likes.ResourceType
-	UserID       string
+	ResourceID   string             `gorm:"index:usr_like,unique"`
+	ResourceType likes.ResourceType `gorm:"index:usr_like,unique"`
+	UserID       string             `gorm:"index:usr_like,unique"`
 	CreatedAt    time.Time
 }

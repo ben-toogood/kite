@@ -6,6 +6,7 @@ import (
 	"github.com/ben-toogood/kite/common/database"
 	"github.com/ben-toogood/kite/common/validations"
 	"github.com/ben-toogood/kite/likes"
+	"github.com/ben-toogood/kite/likes/model"
 )
 
 func (l *Likes) Count(ctx context.Context, req *likes.CountRequest) (*likes.CountResponse, error) {
@@ -19,7 +20,7 @@ func (l *Likes) Count(ctx context.Context, req *likes.CountRequest) (*likes.Coun
 		ResourceID string
 		Count      int32
 	}
-	query := l.DB.Where("resource_type = ? AND resource_id IN (?)", req.ResourceType, req.ResourceIds)
+	query := l.DB.Model(&model.Like{}).Where("resource_type = ? AND resource_id IN (?)", req.ResourceType, req.ResourceIds)
 	query = query.Select("resource_id, COUNT(user_id)").Group("resource_id")
 	if err := query.Scan(&resources).Error; err != nil {
 		return nil, database.TranslateError(err)
