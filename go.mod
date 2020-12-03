@@ -19,6 +19,7 @@ require (
 	github.com/hashicorp/golang-lru v0.5.3 // indirect
 	github.com/lib/pq v1.8.0 // indirect
 	github.com/lileio/lile/v2 v2.2.14-0.20200617145758-67284c38c56e
+	github.com/lileio/pubsub v0.0.0-20180730130251-70c350806efc
 	github.com/lileio/pubsub/v2 v2.3.1
 	github.com/opentracing/opentracing-go v1.1.0
 	github.com/pkg/errors v0.9.1 // indirect

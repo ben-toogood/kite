@@ -60,11 +60,16 @@ spec:
               value: const
             - name: JAEGER_SAMPLER_PARAM
               value: "1"
+            - name: PRIVATE_KEY_FILEPATH
+              value: "/jwt/tls.key"
           volumeMounts:
             - name: pubsub
               mountPath: "/pubsub"
               readOnly: true
-          image: eu.gcr.io/kite-prod-297314/auth:18
+            - name: jwt
+              mountPath: "/jwt"
+              readOnly: true
+          image: eu.gcr.io/kite-prod-297314/auth:6
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8080
@@ -73,3 +78,6 @@ spec:
         - name: pubsub
           secret:
             secretName: pubsub-service-account
+        - name: jwt
+          secret:
+            secretName: kite-jwt

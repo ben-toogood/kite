@@ -5,15 +5,22 @@ metadata:
   namespace: default
   labels:
     name: api
+  annotations:
+    cert-manager.io/issuer: "letsencrypt-prod"
+    acme.cert-manager.io/http01-edit-in-place: "true"
+    kubernetes.io/ingress.class: "nginx"
 spec:
+  tls:
+  - hosts:
+    - api.deploy.wtf
+    secretName: deploy-api-tls
   rules:
     - host: "api.deploy.wtf"
       http:
         paths:
-          - path: /
-            backend:
-              serviceName: api
-              servicePort: http
+        - backend:
+            serviceName: api
+            servicePort: http
 ---
 apiVersion: v1
 kind: Service
