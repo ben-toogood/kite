@@ -57,7 +57,7 @@ spec:
             - name: pubsub
               mountPath: "/pubsub"
               readOnly: true
-          image: eu.gcr.io/kite-prod-297314/users:18
+          image: eu.gcr.io/kite-prod-297314/users:21
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8080

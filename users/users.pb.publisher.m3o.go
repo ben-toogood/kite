@@ -17,7 +17,6 @@ func PublishUserCreated(ctx context.Context, u SerializeableUser) error {
 	if err != nil {
 		return err
 	}
-
 	res := pubsub.Publish(ctx, UserCreated, usr)
 	<-res.Ready
 	return res.Err

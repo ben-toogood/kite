@@ -1,0 +1,14 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: kite-jwt
+  namespace: default
+spec:
+  secretName: kite-jwt
+  issuerRef:
+    name: ca-issuer
+    kind: Issuer
+  commonName: deploy.wtf
+  dnsNames:
+  - deploy.wtf
+  - api.deploy.wtf
