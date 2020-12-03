@@ -1,0 +1,68 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: posts
+  namespace: default
+  labels:
+    name: posts
+spec:
+  ports:
+    - name: grpc
+      port: 8080
+      targetPort: grpc
+  selector:
+    name: posts
+  type: ClusterIP
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: default
+  name: posts
+  labels:
+    name: posts
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: posts
+  template:
+    metadata:
+      labels:
+        name: posts
+    spec:
+      containers:
+        - name: kite
+          env:
+            - name: POSTGRES_URL
+              valueFrom:
+                secretKeyRef:
+                  name: posts-postgres
+                  key: POSTGRES_URL
+            - name: BUCKET_NAME
+              value: kite-posts
+            - name: GOOGLE_APPLICATION_CREDENTIALS
+              value: /pubsub/creds.json
+            - name: JAEGER_SERVICE_NAME
+              value: posts
+            - name: JAEGER_AGENT_HOST
+              value: jaeger-agent
+            - name: JAEGER_AGENT_PORT
+              value: "6831"
+            - name: JAEGER_SAMPLER_TYPE
+              value: const
+            - name: JAEGER_SAMPLER_PARAM
+              value: "1"
+          volumeMounts:
+            - name: pubsub
+              mountPath: "/pubsub"
+              readOnly: true
+          image: eu.gcr.io/kite-prod-297314/posts:21
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8080
+              name: grpc
+      volumes:
+        - name: pubsub
+          secret:
+            secretName: pubsub-service-account

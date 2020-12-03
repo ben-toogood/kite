@@ -8,10 +8,11 @@ import (
 	"net"
 	"os"
 
+	"cloud.google.com/go/storage"
 	"github.com/ben-toogood/kite/common/database"
-	"github.com/ben-toogood/kite/likes"
-	"github.com/ben-toogood/kite/likes/handler"
-	"github.com/ben-toogood/kite/likes/model"
+	"github.com/ben-toogood/kite/posts"
+	"github.com/ben-toogood/kite/posts/model"
+	"github.com/ben-toogood/kite/posts/server"
 	"github.com/grpc-ecosystem/grpc-opentracing/go/otgrpc"
 	"github.com/opentracing/opentracing-go"
 	jaegercfg "github.com/uber/jaeger-client-go/config"
@@ -42,9 +43,16 @@ func main() {
 	if err != nil {
 		fmt.Println(err)
 	}
-	if err := db.AutoMigrate(&model.Like{}); err != nil {
+	if err := db.AutoMigrate(&model.Post{}); err != nil {
 		fmt.Println(err)
 	}
+
+	// connect to google cloud storage
+	client, err := storage.NewClient(context.Background())
+	if err != nil {
+		panic(err)
+	}
+	bucket := client.Bucket(os.Getenv("BUCKET_NAME"))
 
 	// start the server
 	flag.Parse()
@@ -61,8 +69,9 @@ func main() {
 		otgrpc.OpenTracingServerInterceptor(opentracing.GlobalTracer())),
 	)
 	grpcServer := grpc.NewServer(opts...)
-	likes.RegisterLikesServiceServer(grpcServer, &handler.Likes{
-		DB: db,
+	posts.RegisterPostsServiceServer(grpcServer, &server.Posts{
+		Bucket: bucket,
+		DB:     db,
 	})
 	fmt.Printf("Starting server on :%v\n", port)
 	grpcServer.Serve(lis)

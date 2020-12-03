@@ -1,0 +1,37 @@
+syntax = "proto3";
+
+package posts;
+option go_package = "github.com/ben-toogood/kite/posts";
+import "google/protobuf/timestamp.proto";
+
+service PostsService {
+  rpc Create(CreateRequest) returns (CreateResponse);
+  rpc List(ListRequest) returns (ListResponse);
+}
+
+message Post {
+  string id = 1;
+  string author_id = 2;
+  string description = 3;
+  string image_url = 4; 
+  google.protobuf.Timestamp created_at = 5;
+}
+  
+message CreateRequest {
+  string author_id = 1;
+  string description = 2;
+  bytes image = 3;
+}
+
+message CreateResponse {
+  Post post = 1;
+}
+
+message ListRequest {
+  repeated string author_ids = 1; 
+  google.protobuf.Timestamp created_before = 2;
+}
+
+message ListResponse {
+  repeated Post posts = 1;
+}

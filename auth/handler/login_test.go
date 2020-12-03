@@ -4,12 +4,11 @@ import (
 	"context"
 	"testing"
 
-	"github.com/dgrijalva/jwt-go"
-
 	"github.com/ben-toogood/kite/auth"
 	"github.com/ben-toogood/kite/common/validations"
 	"github.com/ben-toogood/kite/users"
 	"github.com/ben-toogood/kite/users/usersfakes"
+	"github.com/dgrijalva/jwt-go"
 	"github.com/stretchr/testify/assert"
 )
 

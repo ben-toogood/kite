@@ -1,6 +1,6 @@
 package followers
 
-//go:generate go run github.com/maxbrunsfeld/counterfeiter/v6 . UsersServiceClient
+//go:generate go run github.com/maxbrunsfeld/counterfeiter/v6 . FollowersServiceClient
 
 import (
 	"os"

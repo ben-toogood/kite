@@ -3,6 +3,7 @@ module github.com/ben-toogood/kite
 go 1.15
 
 require (
+	cloud.google.com/go/storage v1.6.0
 	github.com/HdrHistogram/hdrhistogram-go v1.0.1 // indirect
 	github.com/asaskevich/govalidator v0.0.0-20200907205600-7a23bdc65eef // indirect
 	github.com/cloudflare/cfssl v1.5.0
@@ -19,9 +20,10 @@ require (
 	github.com/grpc-ecosystem/grpc-opentracing v0.0.0-20180507213350-8e809c8a8645
 	github.com/lib/pq v1.8.0 // indirect
 	github.com/lileio/lile/v2 v2.2.14-0.20200617145758-67284c38c56e
-	github.com/lileio/pubsub v0.0.0-20180730130251-70c350806efc
+	github.com/lileio/pubsub v0.0.0-20180730130251-70c350806efc // indirect
 	github.com/lileio/pubsub/v2 v2.3.1
 	github.com/maxbrunsfeld/counterfeiter/v6 v6.3.0 // indirect
+	github.com/opentracing-contrib/go-stdlib v1.0.0
 	github.com/opentracing/opentracing-go v1.1.0
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/prometheus/common v0.6.0 // indirect
