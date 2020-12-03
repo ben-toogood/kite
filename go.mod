@@ -20,9 +20,10 @@ require (
 	github.com/grpc-ecosystem/grpc-opentracing v0.0.0-20180507213350-8e809c8a8645
 	github.com/lib/pq v1.8.0 // indirect
 	github.com/lileio/lile/v2 v2.2.14-0.20200617145758-67284c38c56e
-	github.com/lileio/pubsub v0.0.0-20180730130251-70c350806efc
+	github.com/lileio/pubsub v0.0.0-20180730130251-70c350806efc // indirect
 	github.com/lileio/pubsub/v2 v2.3.1
 	github.com/maxbrunsfeld/counterfeiter/v6 v6.3.0 // indirect
+	github.com/opentracing-contrib/go-stdlib v1.0.0
 	github.com/opentracing/opentracing-go v1.1.0
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/prometheus/common v0.6.0 // indirect
@@ -34,6 +35,7 @@ require (
 	github.com/tj/assert v0.0.3
 	github.com/uber/jaeger-client-go v2.25.0+incompatible
 	github.com/uber/jaeger-lib v2.4.0+incompatible // indirect
+	github.com/vektah/dataloaden v0.3.0 // indirect
 	golang.org/x/net v0.0.0-20201110031124-69a78807bb2b // indirect
 	golang.org/x/sync v0.0.0-20201020160332-67f06af15bc9 // indirect
 	golang.org/x/sys v0.0.0-20201130171929-760e229fe7c5 // indirect

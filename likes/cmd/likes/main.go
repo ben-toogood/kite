@@ -10,8 +10,8 @@ import (
 
 	"github.com/ben-toogood/kite/common/database"
 	"github.com/ben-toogood/kite/likes"
+	"github.com/ben-toogood/kite/likes/handler"
 	"github.com/ben-toogood/kite/likes/model"
-	"github.com/ben-toogood/kite/likes/server"
 	"github.com/grpc-ecosystem/grpc-opentracing/go/otgrpc"
 	"github.com/opentracing/opentracing-go"
 	jaegercfg "github.com/uber/jaeger-client-go/config"
@@ -61,7 +61,7 @@ func main() {
 		otgrpc.OpenTracingServerInterceptor(opentracing.GlobalTracer())),
 	)
 	grpcServer := grpc.NewServer(opts...)
-	likes.RegisterLikesServiceServer(grpcServer, &server.Likes{
+	likes.RegisterLikesServiceServer(grpcServer, &handler.Likes{
 		DB: db,
 	})
 	fmt.Printf("Starting server on :%v\n", port)

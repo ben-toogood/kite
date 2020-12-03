@@ -68,7 +68,7 @@ func (a *Auth) Login(ctx context.Context, req *auth.LoginRequest) (*auth.LoginRe
 	url := fmt.Sprintf("%v/login?%v", os.Getenv("KITE_WEB_URL"), vals.Encode())
 
 	// send the email
-	from := mail.NewEmail("Kite", "goaway@deploy.wtf")
+	from := mail.NewEmail("Kite", "support@m3o.com")
 	subject := "Login with Kite"
 	to := mail.NewEmail("Example User", req.Email)
 	plainTextContent := fmt.Sprintf("Copy and paste %v into your browser", url)

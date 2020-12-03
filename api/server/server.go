@@ -7,11 +7,13 @@ import (
 	"os"
 
 	"github.com/ben-toogood/kite/api/resolvers"
+	"github.com/ben-toogood/kite/auth"
 	"github.com/ben-toogood/kite/comments"
 	"github.com/ben-toogood/kite/users"
 	"github.com/friendsofgo/graphiql"
 	"github.com/graph-gophers/graphql-go"
 	"github.com/graph-gophers/graphql-go/relay"
+	"github.com/opentracing-contrib/go-stdlib/nethttp"
 	"github.com/opentracing/opentracing-go"
 	"github.com/sirupsen/logrus"
 	jaegercfg "github.com/uber/jaeger-client-go/config"
@@ -53,14 +55,16 @@ func main() {
 		log.Fatal(err)
 	}
 
-	opts := []graphql.SchemaOpt{graphql.UseFieldResolvers(), graphql.MaxParallelism(20)}
-	schema := graphql.MustParseSchema(string(schemaFile), &resolvers.Resolver{
+	r := &resolvers.Resolver{
 		Users:    users.NewClient(),
 		Comments: comments.NewClient(),
-	}, opts...)
+		Auth:     auth.NewClient(),
+	}
+	opts := []graphql.SchemaOpt{graphql.UseFieldResolvers(), graphql.MaxParallelism(20)}
+	schema := graphql.MustParseSchema(string(schemaFile), r, opts...)
 
 	http.Handle("/", graphiqlHandler)
-	http.Handle("/graphql", &relay.Handler{Schema: schema})
+	http.Handle("/graphql", nethttp.Middleware(tracer, resolvers.WithLoaders(r, &relay.Handler{Schema: schema})))
 
 	logrus.Info("GraphQL API started on :" + port)
 	log.Fatal(http.ListenAndServe(":"+port, nil))
