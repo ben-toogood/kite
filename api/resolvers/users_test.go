@@ -5,7 +5,7 @@ import (
 
 	"github.com/ben-toogood/kite/users"
 	"github.com/ben-toogood/kite/users/usersfakes"
-	"github.com/tj/assert"
+	"github.com/stretchr/testify/assert"
 )
 
 var getM = `

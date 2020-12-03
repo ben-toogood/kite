@@ -24,7 +24,7 @@ var (
 func NewClient() AuthServiceClient {
 	once.Do(func() {
 		addr := defaultAddress
-		if a := os.Getenv("Auth_ADDRESS"); len(a) > 0 {
+		if a := os.Getenv("AUTH_ADDRESS"); len(a) > 0 {
 			addr = a
 		}
 		conn, _ := grpc.Dial(addr, grpc.WithInsecure(), grpc.WithUnaryInterceptor(

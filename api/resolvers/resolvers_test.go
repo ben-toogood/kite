@@ -50,7 +50,7 @@ func TestMain(m *testing.M) {
 
 func RunQuery(t *testing.T, test *Test) {
 	if test.Context == nil {
-		test.Context = context.Background()
+		test.Context = resolvers.ContextWithLoaders(testResolver, context.TODO())
 	}
 
 	result := schema.Exec(test.Context, test.Query, test.OperationName, test.Variables)

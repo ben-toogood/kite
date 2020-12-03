@@ -69,7 +69,7 @@ spec:
             - name: jwt
               mountPath: "/jwt"
               readOnly: true
-          image: eu.gcr.io/kite-prod-297314/auth:9
+          image: eu.gcr.io/kite-prod-297314/auth:10
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8080

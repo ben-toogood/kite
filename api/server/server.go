@@ -7,6 +7,7 @@ import (
 	"os"
 
 	"github.com/ben-toogood/kite/api/resolvers"
+	"github.com/ben-toogood/kite/auth"
 	"github.com/ben-toogood/kite/comments"
 	"github.com/ben-toogood/kite/users"
 	"github.com/friendsofgo/graphiql"
@@ -53,13 +54,15 @@ func main() {
 		log.Fatal(err)
 	}
 
-	opts := []graphql.SchemaOpt{graphql.UseFieldResolvers(), graphql.MaxParallelism(20)}
-	schema := graphql.MustParseSchema(string(schemaFile), &resolvers.Resolver{
+	r := &resolvers.Resolver{
 		Users:    users.NewClient(),
 		Comments: comments.NewClient(),
-	}, opts...)
+		Auth:     auth.NewClient(),
+	}
+	opts := []graphql.SchemaOpt{graphql.UseFieldResolvers(), graphql.MaxParallelism(20)}
+	schema := graphql.MustParseSchema(string(schemaFile), r, opts...)
 
-	http.Handle("/", graphiqlHandler)
+	http.Handle("/", resolvers.WithLoaders(r, graphiqlHandler))
 	http.Handle("/graphql", &relay.Handler{Schema: schema})
 
 	logrus.Info("GraphQL API started on :" + port)

@@ -2,10 +2,36 @@ package resolvers
 
 import (
 	"context"
+	"time"
 
 	"github.com/ben-toogood/kite/users"
 	"github.com/graph-gophers/graphql-go"
 )
+
+func NewUserLoaderWithCtx(r *Resolver, ctx context.Context) *UserLoader {
+	return NewUserLoader(
+		UserLoaderConfig{
+			Wait:     2 * time.Millisecond,
+			MaxBatch: 100,
+			Fetch: func(keys []string) ([]*User, []error) {
+				us := make([]*User, len(keys))
+				errors := make([]error, len(keys))
+
+				rsp, err := r.Users.Get(ctx, &users.GetRequest{
+					Ids: keys,
+				})
+				if err != nil {
+					return nil, []error{err}
+				}
+
+				for i, key := range keys {
+					us[i] = &User{u: rsp.Users[key]}
+				}
+
+				return us, errors
+			},
+		})
+}
 
 type User struct {
 	u *users.User
@@ -24,12 +50,5 @@ func (u *User) LastName() string {
 }
 
 func (r *Resolver) User(ctx context.Context, args struct{ ID graphql.ID }) (*User, error) {
-	rsp, err := r.Users.Get(ctx, &users.GetRequest{
-		Ids: []string{string(args.ID)},
-	})
-	if err != nil {
-		return nil, err
-	}
-
-	return &User{u: rsp.Users[string(args.ID)]}, nil
+	return LoadersFor(ctx).UserById.Load(string(args.ID))
 }
