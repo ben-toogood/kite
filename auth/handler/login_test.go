@@ -7,10 +7,9 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/dgrijalva/jwt-go"
-
 	"github.com/ben-toogood/kite/auth"
 	"github.com/ben-toogood/kite/common/validations"
+	"github.com/dgrijalva/jwt-go"
 	"github.com/segmentio/ksuid"
 	"github.com/stretchr/testify/assert"
 )

@@ -1,6 +1,6 @@
 package comments
 
-//go:generate go run github.com/maxbrunsfeld/counterfeiter/v6 . UsersServiceClient
+//go:generate go run github.com/maxbrunsfeld/counterfeiter/v6 . CommentsServiceClient
 
 import (
 	"os"
