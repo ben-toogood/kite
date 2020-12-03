@@ -46,11 +46,10 @@ func testHandler(t *testing.T) *Auth {
 	assert.NoErrorf(t, err, "Error generating public key")
 
 	return &Auth{
-		DB:            db,
-		PubSub:        psc,
-		JWTPrivateKey: key,
-		JWTPublicKey:  &key.PublicKey,
-		Sendgrid:      &sendgridMock{Messages: []string{}},
+		DB:         db,
+		PubSub:     psc,
+		PrivateKey: key,
+		Sendgrid:   &sendgridMock{Messages: []string{}},
 	}
 }
 

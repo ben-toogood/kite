@@ -41,11 +41,11 @@ func (a *Auth) Login(ctx context.Context, req *auth.LoginRequest) (*auth.LoginRe
 	})
 
 	// sign the tokens
-	accessToken, err := at.SignedString(a.JWTPrivateKey)
+	accessToken, err := at.SignedString(a.PrivateKey)
 	if err != nil {
 		return nil, err
 	}
-	refreshToken, err := rt.SignedString(a.JWTPrivateKey)
+	refreshToken, err := rt.SignedString(a.PrivateKey)
 	if err != nil {
 		return nil, err
 	}
