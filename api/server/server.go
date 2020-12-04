@@ -10,6 +10,7 @@ import (
 	"github.com/ben-toogood/kite/auth"
 	"github.com/ben-toogood/kite/comments"
 	"github.com/ben-toogood/kite/users"
+	"github.com/eko/graphql-go-upload"
 	"github.com/form3tech-oss/jwt-go"
 	"github.com/friendsofgo/graphiql"
 	"github.com/graph-gophers/graphql-go"
@@ -83,7 +84,7 @@ func main() {
 	mux := http.NewServeMux()
 
 	mux.Handle("/", graphiqlHandler)
-	mux.Handle("/graphql", r.AuthMiddleware(nethttp.Middleware(tracer, resolvers.WithLoaders(r, &relay.Handler{Schema: schema}))))
+	mux.Handle("/graphql", r.AuthMiddleware(upload.Handler(nethttp.Middleware(tracer, resolvers.WithLoaders(r, &relay.Handler{Schema: schema})))))
 
 	logrus.Info("GraphQL API started on :" + port)
 	log.Fatal(http.ListenAndServe(":"+port, cors.Default().Handler(mux)))

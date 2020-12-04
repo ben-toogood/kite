@@ -2,7 +2,9 @@ package server
 
 import (
 	"context"
+	"os"
 
+	"cloud.google.com/go/storage"
 	"github.com/ben-toogood/kite/common/database"
 	"github.com/ben-toogood/kite/common/validations"
 	"github.com/ben-toogood/kite/posts"
@@ -37,10 +39,17 @@ func (p *Posts) Create(ctx context.Context, req *posts.CreateRequest) (*posts.Cr
 		return nil, database.TranslateError(err)
 	}
 
+	// get the URL for the post
+	url, err := storage.SignedURL(os.Getenv("BUCKET_NAME"), imgID, &storage.SignedURLOptions{})
+	if err != nil {
+		return nil, err
+	}
+
 	// serialize the result
 	rsp := &posts.CreateResponse{Post: &posts.Post{}}
 	if err := protocopy.ToProto(post, rsp.Post); err != nil {
 		return nil, err
 	}
+	rsp.Post.ImageUrl = url
 	return rsp, nil
 }

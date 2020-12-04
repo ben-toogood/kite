@@ -7,12 +7,16 @@ import (
 
 	"github.com/ben-toogood/kite/auth"
 	"github.com/ben-toogood/kite/comments"
+	"github.com/ben-toogood/kite/followers"
+	"github.com/ben-toogood/kite/posts"
 	"github.com/ben-toogood/kite/users"
 )
 
 type Resolver struct {
-	Users     users.UsersServiceClient
 	Auth      auth.AuthServiceClient
 	Comments  comments.CommentsServiceClient
+	Followers followers.FollowersServiceClient
+	Users     users.UsersServiceClient
+	Posts     posts.PostsServiceClient
 	PublicKey *rsa.PublicKey
 }

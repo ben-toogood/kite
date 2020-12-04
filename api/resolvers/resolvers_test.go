@@ -10,6 +10,10 @@ import (
 	"sort"
 	"testing"
 
+	"github.com/ben-toogood/kite/followers/followersfakes"
+
+	"github.com/ben-toogood/kite/posts/postsfakes"
+
 	"github.com/ben-toogood/kite/api/resolvers"
 	"github.com/ben-toogood/kite/auth/authfakes"
 	"github.com/ben-toogood/kite/comments/commentsfakes"
@@ -22,9 +26,11 @@ import (
 var schema *graphql.Schema
 
 var testResolver = &resolvers.Resolver{
-	Users:    &usersfakes.FakeUsersServiceClient{},
-	Comments: &commentsfakes.FakeCommentsServiceClient{},
-	Auth:     &authfakes.FakeAuthServiceClient{},
+	Auth:      &authfakes.FakeAuthServiceClient{},
+	Comments:  &commentsfakes.FakeCommentsServiceClient{},
+	Followers: &followersfakes.FakeFollowersServiceClient{},
+	Posts:     &postsfakes.FakePostsServiceClient{},
+	Users:     &usersfakes.FakeUsersServiceClient{},
 }
 
 type Test struct {
