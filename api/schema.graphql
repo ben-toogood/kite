@@ -10,7 +10,7 @@ type Tokens {
 }
 
 type Post {
-  id: String!
+  id: ID!
   author: User!
   description: String!
   imageURL: String!
