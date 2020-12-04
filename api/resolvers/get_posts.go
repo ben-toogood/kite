@@ -13,7 +13,7 @@ type GetPostsInput struct {
 	CreatedBefore *Timestamp
 }
 
-func (r *Resolver) GetPosts(ctx context.Context, input GetPostsInput) ([]*Post, error) {
+func (r *Resolver) GetPosts(ctx context.Context, input GetPostsInput) (*[]*Post, error) {
 	userID := UserIDFromContext(ctx)
 	if len(userID) == 0 {
 		return nil, errUnauthorized
@@ -44,5 +44,5 @@ func (r *Resolver) GetPosts(ctx context.Context, input GetPostsInput) ([]*Post, 
 	for i, p := range pRsp.Posts {
 		posts[i] = &Post{p}
 	}
-	return posts, nil
+	return &posts, nil
 }

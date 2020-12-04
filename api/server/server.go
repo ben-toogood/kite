@@ -88,7 +88,7 @@ func main() {
 	mux := http.NewServeMux()
 
 	mux.Handle("/", graphiqlHandler)
-	mux.Handle("/graphql", r.AuthMiddleware(upload.Handler(nethttp.Middleware(tracer, resolvers.WithLoaders(r, &relay.Handler{Schema: schema})))))
+	mux.Handle("/graphql", nethttp.Middleware(tracer, r.AuthMiddleware(upload.Handler(resolvers.WithLoaders(r, &relay.Handler{Schema: schema})))))
 
 	c := cors.New(cors.Options{
 		AllowedOrigins:   []string{"*"},

@@ -17,7 +17,7 @@ const validateFile = (file: File) => {
 };
 
 const POSTUPLOAD = gql`
-  mutation createPost($description: String!, $file: Upload!) {
+  mutation createPost($description: String!, $file: Upload) {
     createPost(description: $description, image: $file) {
       imageURL
     }
@@ -71,7 +71,9 @@ const Upload = () => {
   };
 
   const upload = () => {
-    uploadFile({ variables: { description, image: selectedFile } });
+    uploadFile({
+      variables: { description, file: selectedFile },
+    });
   };
 
   console.log(loading, data);

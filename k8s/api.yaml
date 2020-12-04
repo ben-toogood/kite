@@ -57,7 +57,7 @@ spec:
     spec:
       containers:
         - name: kite
-          image: eu.gcr.io/kite-prod-297314/api:14
+          image: eu.gcr.io/kite-prod-297314/api:18
           imagePullPolicy: IfNotPresent
           env:
             - name: JAEGER_SERVICE_NAME

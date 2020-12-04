@@ -66,6 +66,7 @@ func (r *Resolver) AuthMiddleware(next http.Handler) http.Handler {
 		claims := j.Claims.(jwt.MapClaims)
 		ctx := context.WithValue(req.Context(), userIDKey{}, claims["sub"])
 		*req = *req.WithContext(ctx)
+		next.ServeHTTP(w, req)
 	})
 }
 

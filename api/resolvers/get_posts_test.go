@@ -9,7 +9,7 @@ import (
 )
 
 var postsM = `
-mutation {
+{
   getPosts() { author { id, firstName, lastName }, description, imageURL }
 }
 `
