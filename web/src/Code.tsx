@@ -27,18 +27,19 @@ const Code = () => {
   const code = query.get("code");
   useEffect(() => {
     if (data?.refreshTokens?.accessToken) {
-      dispatch(actions.login([ data?.refreshTokens?.accessToken, data?.refreshTokens?.refreshToken ]))
+      dispatch(
+        actions.login([
+          data?.refreshTokens?.accessToken,
+          data?.refreshTokens?.refreshToken,
+        ])
+      );
       history.push("/");
     } else {
       refresh({ variables: { refreshToken: code } });
     }
   }, [refresh, code, data, dispatch, history]);
 
-  return (
-    <div>
-      <h1>{query.get("code")}</h1>
-    </div>
-  );
+  return null;
 };
 
 export default Code;

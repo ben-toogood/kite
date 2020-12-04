@@ -2,13 +2,27 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
 import { ApolloProvider, ApolloClient, InMemoryCache } from "@apollo/client";
+import { createUploadLink } from "apollo-upload-client";
+import { setContext } from "@apollo/client/link/context";
 import { store } from "./store";
 import App from "./App";
 import "./index.css";
 
+const authLink = setContext((_: any, { headers }) => {
+  const token = localStorage.getItem("accessToken");
+  return {
+    headers: {
+      ...headers,
+      authorization: token ? `Bearer ${token}` : "",
+    },
+  };
+});
+
 const client = new ApolloClient({
-  uri: "https://api.deploy.wtf/graphql",
-  cache: new InMemoryCache()
+  cache: new InMemoryCache(),
+  link: authLink.concat(
+    createUploadLink({ uri: "https://api.deploy.wtf/graphql" })
+  ),
 });
 
 ReactDOM.render(

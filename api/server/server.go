@@ -9,8 +9,10 @@ import (
 	"github.com/ben-toogood/kite/api/resolvers"
 	"github.com/ben-toogood/kite/auth"
 	"github.com/ben-toogood/kite/comments"
+	"github.com/ben-toogood/kite/followers"
+	"github.com/ben-toogood/kite/posts"
 	"github.com/ben-toogood/kite/users"
-	"github.com/eko/graphql-go-upload"
+	upload "github.com/eko/graphql-go-upload"
 	"github.com/form3tech-oss/jwt-go"
 	"github.com/friendsofgo/graphiql"
 	"github.com/graph-gophers/graphql-go"
@@ -76,6 +78,8 @@ func main() {
 		Users:     users.NewClient(),
 		Comments:  comments.NewClient(),
 		Auth:      auth.NewClient(),
+		Posts:     posts.NewClient(),
+		Followers: followers.NewClient(),
 		PublicKey: key,
 	}
 	opts := []graphql.SchemaOpt{graphql.UseFieldResolvers(), graphql.MaxParallelism(20)}
@@ -86,6 +90,13 @@ func main() {
 	mux.Handle("/", graphiqlHandler)
 	mux.Handle("/graphql", r.AuthMiddleware(upload.Handler(nethttp.Middleware(tracer, resolvers.WithLoaders(r, &relay.Handler{Schema: schema})))))
 
+	c := cors.New(cors.Options{
+		AllowedOrigins:   []string{"*"},
+		AllowedMethods:   []string{http.MethodPost},
+		AllowedHeaders:   []string{"*"},
+		AllowCredentials: true,
+	})
+
 	logrus.Info("GraphQL API started on :" + port)
-	log.Fatal(http.ListenAndServe(":"+port, cors.Default().Handler(mux)))
+	log.Fatal(http.ListenAndServe(":"+port, c.Handler(mux)))
 }

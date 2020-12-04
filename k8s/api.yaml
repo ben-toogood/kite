@@ -57,7 +57,7 @@ spec:
     spec:
       containers:
         - name: kite
-          image: eu.gcr.io/kite-prod-297314/api:11
+          image: eu.gcr.io/kite-prod-297314/api:14
           imagePullPolicy: IfNotPresent
           env:
             - name: JAEGER_SERVICE_NAME
@@ -70,6 +70,16 @@ spec:
               value: const
             - name: JAEGER_SAMPLER_PARAM
               value: "1"
+            - name: PUBLIC_KEY_FILEPATH
+              value: "/jwt/tls.crt"
+          volumeMounts:
+            - name: jwt
+              mountPath: "/jwt"
+              readOnly: true
           ports:
             - containerPort: 8080
               name: http
+      volumes:
+        - name: jwt
+          secret:
+            secretName: kite-jwt

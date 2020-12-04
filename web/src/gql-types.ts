@@ -36,6 +36,27 @@ export interface requestLoginVariables {
   email: string;
 }
 
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL mutation operation: createPost
+// ====================================================
+
+export interface createPost_createPost {
+  imageURL: string;
+}
+
+export interface createPost {
+  createPost: createPost_createPost;
+}
+
+export interface createPostVariables {
+  description: string;
+  file: any;
+}
+
 /* tslint:disable */
 // This file was automatically generated and should not be edited.
 

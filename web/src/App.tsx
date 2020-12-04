@@ -5,7 +5,7 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { useSelector } from "./store";
 
 function App() {
-  const loggedIn = useSelector(s => s.login.loggedIn);
+  const loggedIn = useSelector((s) => s.login.loggedIn);
 
   return (
     <Router>
@@ -13,7 +13,7 @@ function App() {
         <Route path="/" exact>
           {loggedIn ? <Feed /> : <Login />}
         </Route>
-        <Route path="/login?">
+        <Route path="/login">
           <Code />
         </Route>
       </Switch>
