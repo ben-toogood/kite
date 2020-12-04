@@ -23,9 +23,9 @@ type Mutation {
   signup(firstName: String!, lastName: String!, email: String!): User!
   refreshTokens(refreshToken: String!): Tokens
   login(email: String!): Boolean
-  getPosts(createdBefore: Timestamp): [Post]!
 }
 
 type Query {
   user(id: ID!): User
+  getPosts(createdBefore: Timestamp): [Post]
 }
