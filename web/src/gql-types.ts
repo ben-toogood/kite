@@ -25,6 +25,34 @@ export interface refreshLoginVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL query operation: getPosts
+// ====================================================
+
+export interface getPosts_getPosts_author {
+  firstName: string;
+  lastName: string;
+}
+
+export interface getPosts_getPosts {
+  id: string;
+  imageURL: string;
+  description: string;
+  author: getPosts_getPosts_author;
+}
+
+export interface getPosts {
+  getPosts: (getPosts_getPosts | null)[] | null;
+}
+
+export interface getPostsVariables {
+  createdBefore?: any | null;
+}
+
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL mutation operation: requestLogin
 // ====================================================
 
@@ -54,7 +82,7 @@ export interface createPost {
 
 export interface createPostVariables {
   description: string;
-  file: any;
+  imageBase64: string;
 }
 
 /* tslint:disable */

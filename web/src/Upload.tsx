@@ -17,8 +17,8 @@ const validateFile = (file: File) => {
 };
 
 const POSTUPLOAD = gql`
-  mutation createPost($description: String!, $file: Upload) {
-    createPost(description: $description, image: $file) {
+  mutation createPost($description: String!, $imageBase64: String!) {
+    createPost(description: $description, imageBase64: $imageBase64) {
       imageURL
     }
   }
@@ -28,7 +28,9 @@ const Upload = () => {
   const [previewImage, setPreviewImage] = useState<string | undefined>(
     undefined
   );
-  const [selectedFile, setSelectedFile] = useState<File | undefined>(undefined);
+  const [selectedFile, setSelectedFile] = useState<string | undefined>(
+    undefined
+  );
   const [description, setDescription] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [uploadFile, { loading, data }] = useMutation<createPost>(POSTUPLOAD);
@@ -39,10 +41,12 @@ const Upload = () => {
     }
 
     if (validateFile(files[0])) {
-      setSelectedFile(files[0]);
       const reader = new FileReader();
       reader.readAsDataURL(files[0]);
       reader.onload = function (e) {
+        setSelectedFile(
+          e.target?.result?.toString().replace(/data:.+\/.+;base64,/, "")
+        );
         setPreviewImage(e.target?.result as string);
       };
     } else {
@@ -72,7 +76,7 @@ const Upload = () => {
 
   const upload = () => {
     uploadFile({
-      variables: { description, file: selectedFile },
+      variables: { description, imageBase64: selectedFile },
     });
   };
 
@@ -88,7 +92,7 @@ const Upload = () => {
 
   if (previewImage) {
     return (
-      <div className="flex flex-col items-center w-1/3 p-4 mt-6 border-2">
+      <div className="flex flex-col items-center p-4 mt-6 border-2">
         <img src={previewImage} />
         <textarea
           id="about"
@@ -109,7 +113,7 @@ const Upload = () => {
 
   return (
     <div
-      className="flex justify-center w-1/3 p-4 mt-6 border-4 border-dashed border-light-blue-500"
+      className="flex justify-center p-4 mt-6 border-4 border-dashed border-light-blue-500"
       onDragOver={dragOver}
       onDragEnter={dragEnter}
       onDragLeave={dragLeave}

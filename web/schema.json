@@ -73,12 +73,16 @@
                   "defaultValue": null
                 },
                 {
-                  "name": "image",
+                  "name": "imageBase64",
                   "description": null,
                   "type": {
-                    "kind": "SCALAR",
-                    "name": "Upload",
-                    "ofType": null
+                    "kind": "NON_NULL",
+                    "name": null,
+                    "ofType": {
+                      "kind": "SCALAR",
+                      "name": "String",
+                      "ofType": null
+                    }
                   },
                   "defaultValue": null
                 }
@@ -207,37 +211,6 @@
               },
               "isDeprecated": false,
               "deprecationReason": null
-            },
-            {
-              "name": "getPosts",
-              "description": null,
-              "args": [
-                {
-                  "name": "createdBefore",
-                  "description": null,
-                  "type": {
-                    "kind": "SCALAR",
-                    "name": "Timestamp",
-                    "ofType": null
-                  },
-                  "defaultValue": null
-                }
-              ],
-              "type": {
-                "kind": "NON_NULL",
-                "name": null,
-                "ofType": {
-                  "kind": "LIST",
-                  "name": null,
-                  "ofType": {
-                    "kind": "OBJECT",
-                    "name": "Post",
-                    "ofType": null
-                  }
-                }
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
             }
           ],
           "inputFields": null,
@@ -250,6 +223,22 @@
           "name": "Post",
           "description": null,
           "fields": [
+            {
+              "name": "id",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "ID",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
             {
               "name": "author",
               "description": null,
@@ -332,6 +321,33 @@
                 "kind": "OBJECT",
                 "name": "User",
                 "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "getPosts",
+              "description": null,
+              "args": [
+                {
+                  "name": "createdBefore",
+                  "description": null,
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "Timestamp",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                }
+              ],
+              "type": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "OBJECT",
+                  "name": "Post",
+                  "ofType": null
+                }
               },
               "isDeprecated": false,
               "deprecationReason": null
