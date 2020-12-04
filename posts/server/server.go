@@ -7,6 +7,8 @@ import (
 
 // Posts implements the posts handler interface
 type Posts struct {
-	DB     *gorm.DB
-	Bucket *storage.BucketHandle
+	DB               *gorm.DB
+	Bucket           *storage.BucketHandle
+	GoogleAccessID   string
+	GooglePrivateKey []byte
 }

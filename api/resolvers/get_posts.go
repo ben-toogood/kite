@@ -30,11 +30,14 @@ func (r *Resolver) GetPosts(ctx context.Context, input GetPostsInput) (*[]*Post,
 	for i, r := range fRsp.Following {
 		authorIDs[i] = r.Id
 	}
+	authorIDs = append(authorIDs, userID)
 
 	// lookup the posts authored by these users
-	pRsp, err := r.Posts.List(ctx, &posts.ListRequest{
-		AuthorIds: authorIDs, CreatedBefore: timestamppb.New(input.CreatedBefore.Time),
-	})
+	pr := &posts.ListRequest{AuthorIds: authorIDs}
+	if input.CreatedBefore != nil {
+		pr.CreatedBefore = timestamppb.New(input.CreatedBefore.Time)
+	}
+	pRsp, err := r.Posts.List(ctx, pr)
 	if err != nil {
 		return nil, err
 	}

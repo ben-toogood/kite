@@ -30,7 +30,7 @@ func main() {
 	if len(os.Getenv("PORT")) > 0 {
 		port = os.Getenv("PORT")
 	}
-	lis, err := net.Listen("tcp", fmt.Sprintf("localhost:%s", port))
+	lis, err := net.Listen("tcp", fmt.Sprintf(":%s", port))
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)
 	}

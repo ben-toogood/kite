@@ -3,6 +3,7 @@ package server
 import (
 	"context"
 	"os"
+	"time"
 
 	"cloud.google.com/go/storage"
 	"github.com/ben-toogood/kite/common/database"
@@ -38,15 +39,20 @@ func (p *Posts) List(ctx context.Context, req *posts.ListRequest) (*posts.ListRe
 	rsp := &posts.ListResponse{
 		Posts: make([]*posts.Post, len(data)),
 	}
-	for i, p := range data {
+	for i, ps := range data {
 		// get the URL for the post
-		url, err := storage.SignedURL(os.Getenv("BUCKET_NAME"), p.ImageID, &storage.SignedURLOptions{})
+		url, err := storage.SignedURL(os.Getenv("BUCKET_NAME"), ps.ImageID, &storage.SignedURLOptions{
+			GoogleAccessID: p.GoogleAccessID,
+			PrivateKey:     p.GooglePrivateKey,
+			Method:         "GET",
+			Expires:        time.Now().Add(1 * time.Hour),
+		})
 		if err != nil {
 			return nil, err
 		}
 
 		var post posts.Post
-		if err := protocopy.ToProto(p, &post); err != nil {
+		if err := protocopy.ToProto(ps, &post); err != nil {
 			return nil, err
 		}
 		post.ImageUrl = url

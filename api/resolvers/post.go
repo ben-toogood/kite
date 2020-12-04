@@ -11,12 +11,12 @@ type Post struct {
 	p *posts.Post
 }
 
-func (p *Post) Author(ctx context.Context) (*User, error) {
-	return LoadersFor(ctx).UserById.Load(p.p.AuthorId)
+func (p *Post) ID() graphql.ID {
+	return graphql.ID(p.p.Id)
 }
 
-func (p *Post) AuthorID() graphql.ID {
-	return graphql.ID(p.p.AuthorId)
+func (p *Post) Author(ctx context.Context) (*User, error) {
+	return LoadersFor(ctx).UserById.Load(p.p.AuthorId)
 }
 
 func (p *Post) ImageURL() string {
