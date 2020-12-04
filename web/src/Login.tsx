@@ -12,8 +12,8 @@ const REQUEST_LOGIN = gql`
 `;
 
 const Login = () => {
-  const [email, setEmail] = useState("");
   const dispatch = useDispatch();
+  const [email, setEmail] = useState("");
   const [requestLogin, { data, loading }] = useMutation<requestLogin>(REQUEST_LOGIN);
 
   const handleSubmit = (evt: React.FormEvent) => {
@@ -22,9 +22,10 @@ const Login = () => {
   };
 
   if (data?.login) {
-    dispatch(actions.login(data.login))
+    dispatch(actions.request(data.login))
   }
 
+  const requested = Boolean(loading || data?.login);
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
@@ -58,6 +59,8 @@ const Login = () => {
           </div>
 
           <div>
+            {requested ?
+            <p className="flex justify-center mt-3 text-base text-gray-500 sm:mt-5 sm:text-lg sm:max-w-xl sm:mx-auto md:mt-5 md:text-xl lg:mx-0">Please check your email</p> :
             <button
               disabled={Boolean(loading || data?.login)}
               type="submit"
@@ -80,6 +83,7 @@ const Login = () => {
               </span>
               Sign in
             </button>
+    }
           </div>
         </form>
       </div>

@@ -4,6 +4,27 @@
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL mutation operation: refreshLogin
+// ====================================================
+
+export interface refreshLogin_refreshTokens {
+  accessToken: string;
+  refreshToken: string;
+}
+
+export interface refreshLogin {
+  refreshTokens: refreshLogin_refreshTokens | null;
+}
+
+export interface refreshLoginVariables {
+  refreshToken: string;
+}
+
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL mutation operation: requestLogin
 // ====================================================
 
