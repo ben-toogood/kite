@@ -3,6 +3,7 @@ import { actions } from "./features/login";
 import { useDispatch } from "react-redux";
 import { gql, useMutation } from "@apollo/client";
 import { requestLogin } from "./gql-types";
+import logo from "./logo.png"
 
 const REQUEST_LOGIN = gql`
   mutation requestLogin($email: String!) {
@@ -12,7 +13,7 @@ const REQUEST_LOGIN = gql`
 
 const Login = () => {
   const [email, setEmail] = useState("");
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch();
   const [requestLogin, { data, loading }] = useMutation<requestLogin>(REQUEST_LOGIN);
 
   const handleSubmit = (evt: React.FormEvent) => {
@@ -20,8 +21,8 @@ const Login = () => {
     requestLogin({ variables: { email } });
   };
 
-  if(data?.login) {
-    // dispatch(l)
+  if (data?.login) {
+    dispatch(actions.login(data.login))
   }
 
 
@@ -30,13 +31,10 @@ const Login = () => {
       <div className="max-w-md w-full space-y-8">
         <div>
           <img
-            className="mx-auto h-12 w-auto"
-            src="https://tailwindui.com/img/logos/workflow-mark-indigo-600.svg"
+            className="mx-auto h-24 w-auto"
+            src={logo}
             alt="Workflow"
           />
-          <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-            Kite
-          </h2>
         </div>
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
           <input type="hidden" name="remember" value="true" />
@@ -61,7 +59,7 @@ const Login = () => {
 
           <div>
             <button
-              disabled={loading}
+              disabled={Boolean(loading || data?.login)}
               type="submit"
               className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
             >
