@@ -12,7 +12,6 @@ import (
 	"github.com/ben-toogood/kite/followers"
 	"github.com/ben-toogood/kite/posts"
 	"github.com/ben-toogood/kite/users"
-	upload "github.com/eko/graphql-go-upload"
 	"github.com/form3tech-oss/jwt-go"
 	"github.com/friendsofgo/graphiql"
 	"github.com/graph-gophers/graphql-go"
@@ -88,7 +87,7 @@ func main() {
 	mux := http.NewServeMux()
 
 	mux.Handle("/", graphiqlHandler)
-	mux.Handle("/graphql", nethttp.Middleware(tracer, r.AuthMiddleware(upload.Handler(resolvers.WithLoaders(r, &relay.Handler{Schema: schema})))))
+	mux.Handle("/graphql", nethttp.Middleware(tracer, r.AuthMiddleware(resolvers.WithLoaders(r, &relay.Handler{Schema: schema}))))
 
 	c := cors.New(cors.Options{
 		AllowedOrigins:   []string{"*"},

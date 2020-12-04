@@ -3,6 +3,7 @@ package server
 import (
 	"context"
 	"os"
+	"time"
 
 	"cloud.google.com/go/storage"
 	"github.com/ben-toogood/kite/common/database"
@@ -40,7 +41,12 @@ func (p *Posts) Create(ctx context.Context, req *posts.CreateRequest) (*posts.Cr
 	}
 
 	// get the URL for the post
-	url, err := storage.SignedURL(os.Getenv("BUCKET_NAME"), imgID, &storage.SignedURLOptions{})
+	url, err := storage.SignedURL(os.Getenv("BUCKET_NAME"), imgID, &storage.SignedURLOptions{
+		GoogleAccessID: p.GoogleAccessID,
+		PrivateKey:     p.GooglePrivateKey,
+		Method:         "GET",
+		Expires:        time.Now().Add(1 * time.Hour),
+	})
 	if err != nil {
 		return nil, err
 	}

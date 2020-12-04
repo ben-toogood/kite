@@ -4,6 +4,7 @@ import (
 	"context"
 	"flag"
 	"fmt"
+	"io/ioutil"
 	"log"
 	"net"
 	"os"
@@ -47,6 +48,20 @@ func main() {
 		fmt.Println(err)
 	}
 
+	// parse the google cloud private key
+	path := os.Getenv("GOOGLE_PRIVATE_KEY")
+	if len(path) == 0 {
+		panic("Missing required config: GOOGLE_PRIVATE_KEY")
+	}
+	pKey, err := ioutil.ReadFile(path)
+	if err != nil {
+		panic(err)
+	}
+	gID := os.Getenv("GOOGLE_ACCESS_ID")
+	if len(gID) == 0 {
+		panic("Missing required config: GOOGLE_ACCESS_ID")
+	}
+
 	// connect to google cloud storage
 	client, err := storage.NewClient(context.Background())
 	if err != nil {
@@ -70,8 +85,10 @@ func main() {
 	)
 	grpcServer := grpc.NewServer(opts...)
 	posts.RegisterPostsServiceServer(grpcServer, &server.Posts{
-		Bucket: bucket,
-		DB:     db,
+		Bucket:           bucket,
+		DB:               db,
+		GoogleAccessID:   gID,
+		GooglePrivateKey: pKey,
 	})
 	fmt.Printf("Starting server on :%v\n", port)
 	grpcServer.Serve(lis)

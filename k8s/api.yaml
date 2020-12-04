@@ -11,16 +11,16 @@ metadata:
     kubernetes.io/ingress.class: "nginx"
 spec:
   tls:
-  - hosts:
-    - api.deploy.wtf
-    secretName: deploy-api-tls
+    - hosts:
+        - api.deploy.wtf
+      secretName: deploy-api-tls
   rules:
     - host: "api.deploy.wtf"
       http:
         paths:
-        - backend:
-            serviceName: api
-            servicePort: http
+          - backend:
+              serviceName: api
+              servicePort: http
 ---
 apiVersion: v1
 kind: Service
@@ -57,7 +57,7 @@ spec:
     spec:
       containers:
         - name: kite
-          image: eu.gcr.io/kite-prod-297314/api:18
+          image: eu.gcr.io/kite-prod-297314/api:24
           imagePullPolicy: IfNotPresent
           env:
             - name: JAEGER_SERVICE_NAME

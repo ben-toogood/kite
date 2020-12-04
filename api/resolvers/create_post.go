@@ -2,14 +2,14 @@ package resolvers
 
 import (
 	"context"
+	"encoding/base64"
 	"errors"
-	"io/ioutil"
 
 	"github.com/ben-toogood/kite/posts"
 )
 
 type CreatePostInput struct {
-	Image       *GraphQLUpload
+	ImageBase64 string
 	Description string
 }
 
@@ -21,7 +21,7 @@ func (r *Resolver) CreatePost(ctx context.Context, input CreatePostInput) (*Post
 		return nil, errUnauthorized
 	}
 
-	bytes, err := ioutil.ReadFile(input.Image.Filepath)
+	bytes, err := base64.StdEncoding.DecodeString(input.ImageBase64)
 	if err != nil {
 		return nil, err
 	}

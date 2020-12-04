@@ -10,6 +10,7 @@ type Tokens {
 }
 
 type Post {
+  id: String!
   author: User!
   description: String!
   imageURL: String!
@@ -19,7 +20,7 @@ scalar Upload
 scalar Timestamp
 
 type Mutation {
-  createPost(description: String!, image: Upload): Post!
+  createPost(description: String!, imageBase64: String!): Post!
   signup(firstName: String!, lastName: String!, email: String!): User!
   refreshTokens(refreshToken: String!): Tokens
   login(email: String!): Boolean
