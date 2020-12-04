@@ -10,6 +10,7 @@ import (
 	"github.com/ben-toogood/kite/auth"
 	"github.com/ben-toogood/kite/comments"
 	"github.com/ben-toogood/kite/users"
+	"github.com/form3tech-oss/jwt-go"
 	"github.com/friendsofgo/graphiql"
 	"github.com/graph-gophers/graphql-go"
 	"github.com/graph-gophers/graphql-go/relay"
@@ -27,6 +28,20 @@ func main() {
 	port := os.Getenv("PORT")
 	if port == "" {
 		port = defaultPort
+	}
+
+	// Load the certs
+	keyPath := os.Getenv("PUBLIC_KEY_FILEPATH")
+	if len(keyPath) == 0 {
+		panic("Missing PUBLIC_KEY_FILEPATH")
+	}
+	file, err := ioutil.ReadFile(keyPath)
+	if err != nil {
+		panic(err)
+	}
+	key, err := jwt.ParseRSAPublicKeyFromPEM(file)
+	if err != nil {
+		panic(err)
 	}
 
 	// Jeager
@@ -57,9 +72,10 @@ func main() {
 	}
 
 	r := &resolvers.Resolver{
-		Users:    users.NewClient(),
-		Comments: comments.NewClient(),
-		Auth:     auth.NewClient(),
+		Users:     users.NewClient(),
+		Comments:  comments.NewClient(),
+		Auth:      auth.NewClient(),
+		PublicKey: key,
 	}
 	opts := []graphql.SchemaOpt{graphql.UseFieldResolvers(), graphql.MaxParallelism(20)}
 	schema := graphql.MustParseSchema(string(schemaFile), r, opts...)
@@ -67,7 +83,7 @@ func main() {
 	mux := http.NewServeMux()
 
 	mux.Handle("/", graphiqlHandler)
-	mux.Handle("/graphql", nethttp.Middleware(tracer, resolvers.WithLoaders(r, &relay.Handler{Schema: schema})))
+	mux.Handle("/graphql", r.AuthMiddleware(nethttp.Middleware(tracer, resolvers.WithLoaders(r, &relay.Handler{Schema: schema}))))
 
 	logrus.Info("GraphQL API started on :" + port)
 	log.Fatal(http.ListenAndServe(":"+port, cors.Default().Handler(mux)))
