@@ -1,17 +1,9 @@
-- web ui (React,Typescript)
-- api (GraphQL, Go)
-
-- auth 👨‍💻
+- auth ✅
 - users ✅
-- posts
+- posts ✅
 - followers ✅
 - comments ✅
-- likes
+- likes ✅
 
-Post
-
-- author users.User
-- comments repeated comments.Comment
-  - author users.User
-- likes number
-- media url
+- web ui (React,Typescript) 👨‍💻
+- api (GraphQL, Go) 👨‍💻
