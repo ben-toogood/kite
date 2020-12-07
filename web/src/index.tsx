@@ -13,7 +13,7 @@ const authLink = setContext((_: any, { headers }) => {
   return {
     headers: {
       ...headers,
-      authorization: token ? `Bearer ${token}` : "",
+      Authorization: token ? `Bearer ${token}` : "",
     },
   };
 });
@@ -21,7 +21,7 @@ const authLink = setContext((_: any, { headers }) => {
 const client = new ApolloClient({
   cache: new InMemoryCache(),
   link: authLink.concat(
-    createUploadLink({ uri: "https://api.deploy.wtf/graphql" })
+    createUploadLink({ uri: "https://api.deploy.wtf/query" })
   ),
 });
 

@@ -17,8 +17,8 @@ const validateFile = (file: File) => {
 };
 
 const POSTUPLOAD = gql`
-  mutation createPost($description: String!, $imageBase64: String!) {
-    createPost(description: $description, imageBase64: $imageBase64) {
+  mutation createPost($description: String!, $image: Upload!) {
+    createPost(description: $description, image: $image) {
       imageURL
     }
   }
@@ -28,9 +28,7 @@ const Upload = () => {
   const [previewImage, setPreviewImage] = useState<string | undefined>(
     undefined
   );
-  const [selectedFile, setSelectedFile] = useState<string | undefined>(
-    undefined
-  );
+  const [selectedFile, setSelectedFile] = useState<File | undefined>(undefined);
   const [description, setDescription] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [uploadFile, { loading, data }] = useMutation<createPost>(POSTUPLOAD);
@@ -44,9 +42,7 @@ const Upload = () => {
       const reader = new FileReader();
       reader.readAsDataURL(files[0]);
       reader.onload = function (e) {
-        setSelectedFile(
-          e.target?.result?.toString().replace(/data:.+\/.+;base64,/, "")
-        );
+        setSelectedFile(files[0]);
         setPreviewImage(e.target?.result as string);
       };
     } else {
@@ -76,7 +72,7 @@ const Upload = () => {
 
   const upload = () => {
     uploadFile({
-      variables: { description, imageBase64: selectedFile },
+      variables: { description, image: selectedFile },
     });
   };
 

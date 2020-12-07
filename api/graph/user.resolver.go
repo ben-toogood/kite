@@ -1,11 +1,10 @@
-package resolvers
+package graph
 
 import (
 	"context"
 	"time"
 
 	"github.com/ben-toogood/kite/users"
-	"github.com/graph-gophers/graphql-go"
 )
 
 func NewUserLoaderWithCtx(r *Resolver, ctx context.Context) *UserLoader {
@@ -33,22 +32,6 @@ func NewUserLoaderWithCtx(r *Resolver, ctx context.Context) *UserLoader {
 		})
 }
 
-type User struct {
-	u *users.User
-}
-
-func (u *User) ID() graphql.ID {
-	return graphql.ID(u.u.Id)
-}
-
-func (u *User) FirstName() string {
-	return u.u.FirstName
-}
-
-func (u *User) LastName() string {
-	return u.u.LastName
-}
-
-func (r *Resolver) User(ctx context.Context, args struct{ ID graphql.ID }) (*User, error) {
-	return LoadersFor(ctx).UserById.Load(string(args.ID))
+func (r *queryResolver) User(ctx context.Context, id string) (*User, error) {
+	return LoadersFor(ctx).UserById.Load(id)
 }

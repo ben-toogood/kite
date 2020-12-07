@@ -5,21 +5,23 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"time"
 
-	"github.com/ben-toogood/kite/api/resolvers"
+	"github.com/99designs/gqlgen/graphql/handler"
+	"github.com/99designs/gqlgen/graphql/handler/extension"
+	"github.com/99designs/gqlgen/graphql/handler/lru"
+	"github.com/99designs/gqlgen/graphql/handler/transport"
+	"github.com/99designs/gqlgen/graphql/playground"
+	"github.com/alecthomas/units"
+	"github.com/ben-toogood/kite/api/graph"
 	"github.com/ben-toogood/kite/auth"
 	"github.com/ben-toogood/kite/comments"
 	"github.com/ben-toogood/kite/followers"
 	"github.com/ben-toogood/kite/posts"
 	"github.com/ben-toogood/kite/users"
-	"github.com/form3tech-oss/jwt-go"
-	"github.com/friendsofgo/graphiql"
-	"github.com/graph-gophers/graphql-go"
-	"github.com/graph-gophers/graphql-go/relay"
-	"github.com/opentracing-contrib/go-stdlib/nethttp"
+	"github.com/dgrijalva/jwt-go"
 	"github.com/opentracing/opentracing-go"
 	"github.com/rs/cors"
-	"github.com/sirupsen/logrus"
 	jaegercfg "github.com/uber/jaeger-client-go/config"
 	jaegerlog "github.com/uber/jaeger-client-go/log"
 )
@@ -63,17 +65,7 @@ func main() {
 
 	opentracing.SetGlobalTracer(tracer)
 
-	graphiqlHandler, err := graphiql.NewGraphiqlHandler("/graphql")
-	if err != nil {
-		panic(err)
-	}
-
-	schemaFile, err := ioutil.ReadFile("./schema.graphql")
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	r := &resolvers.Resolver{
+	r := &graph.Resolver{
 		Users:     users.NewClient(),
 		Comments:  comments.NewClient(),
 		Auth:      auth.NewClient(),
@@ -81,13 +73,27 @@ func main() {
 		Followers: followers.NewClient(),
 		PublicKey: key,
 	}
-	opts := []graphql.SchemaOpt{graphql.UseFieldResolvers(), graphql.MaxParallelism(20)}
-	schema := graphql.MustParseSchema(string(schemaFile), r, opts...)
 
-	mux := http.NewServeMux()
+	gh := handler.New(graph.NewExecutableSchema(graph.Config{Resolvers: r}))
 
-	mux.Handle("/", graphiqlHandler)
-	mux.Handle("/graphql", nethttp.Middleware(tracer, r.AuthMiddleware(resolvers.WithLoaders(r, &relay.Handler{Schema: schema}))))
+	gh.AddTransport(transport.Websocket{
+		KeepAlivePingInterval: 30 * time.Second,
+	})
+	gh.AddTransport(transport.Options{})
+	gh.AddTransport(transport.GET{})
+	gh.AddTransport(transport.POST{})
+	gh.AddTransport(
+		transport.MultipartForm{
+			MaxUploadSize: int64(20 * units.MB),
+			MaxMemory:     int64(50 * units.MB),
+		},
+	)
+	gh.SetQueryCache(lru.New(1000))
+	gh.Use(extension.Introspection{})
+
+	h := http.Handler(gh)
+	h = graph.WithLoaders(r, h)
+	h = r.AuthMiddleware(h)
 
 	c := cors.New(cors.Options{
 		AllowedOrigins:   []string{"*"},
@@ -96,6 +102,11 @@ func main() {
 		AllowCredentials: true,
 	})
 
-	logrus.Info("GraphQL API started on :" + port)
-	log.Fatal(http.ListenAndServe(":"+port, c.Handler(mux)))
+	h = c.Handler(h)
+
+	http.Handle("/", playground.Handler("GraphQL playground", "/query"))
+	http.Handle("/query", h)
+
+	log.Printf("connect to http://localhost:%s/ for GraphQL playground", port)
+	log.Fatal(http.ListenAndServe(":"+port, nil))
 }

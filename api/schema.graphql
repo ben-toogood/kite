@@ -17,10 +17,9 @@ type Post {
 }
 
 scalar Upload
-scalar Timestamp
 
 type Mutation {
-  createPost(description: String!, imageBase64: String!): Post!
+  createPost(description: String!, image: Upload!): Post!
   signup(firstName: String!, lastName: String!, email: String!): User!
   refreshTokens(refreshToken: String!): Tokens
   login(email: String!): Boolean
@@ -28,5 +27,5 @@ type Mutation {
 
 type Query {
   user(id: ID!): User
-  getPosts(createdBefore: Timestamp): [Post]
+  getPosts(createdBefore: Time): [Post]
 }

@@ -4,7 +4,9 @@ go 1.15
 
 require (
 	cloud.google.com/go/storage v1.6.0
+	github.com/99designs/gqlgen v0.13.0
 	github.com/HdrHistogram/hdrhistogram-go v1.0.1 // indirect
+	github.com/alecthomas/units v0.0.0-20201120081800-1786d5ef83d4 // indirect
 	github.com/asaskevich/govalidator v0.0.0-20200907205600-7a23bdc65eef // indirect
 	github.com/cloudflare/cfssl v1.5.0
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
@@ -35,6 +37,7 @@ require (
 	github.com/tj/assert v0.0.3
 	github.com/uber/jaeger-client-go v2.25.0+incompatible
 	github.com/uber/jaeger-lib v2.4.0+incompatible // indirect
+	github.com/vektah/gqlparser/v2 v2.1.0
 	golang.org/x/net v0.0.0-20201110031124-69a78807bb2b // indirect
 	golang.org/x/sys v0.0.0-20201130171929-760e229fe7c5 // indirect
 	golang.org/x/text v0.3.4 // indirect

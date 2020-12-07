@@ -1,4 +1,4 @@
-package resolvers
+package graph
 
 import (
 	"context"
@@ -6,13 +6,9 @@ import (
 	"github.com/ben-toogood/kite/auth"
 )
 
-type LoginInput struct {
-	Email string
-}
-
-func (r *Resolver) Login(ctx context.Context, input LoginInput) (*bool, error) {
+func (r *mutationResolver) Login(ctx context.Context, email string) (*bool, error) {
 	_, err := r.Auth.Login(ctx, &auth.LoginRequest{
-		Email: input.Email,
+		Email: email,
 	})
 	if err != nil {
 		return nil, err

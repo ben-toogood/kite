@@ -9,6 +9,8 @@ metadata:
     cert-manager.io/issuer: "letsencrypt-prod"
     acme.cert-manager.io/http01-edit-in-place: "true"
     kubernetes.io/ingress.class: "nginx"
+    nginx.ingress.kubernetes.io/proxy-body-size: "50m"
+    nginx.org/client-max-body-size: "50m"
 spec:
   tls:
     - hosts:
@@ -57,7 +59,7 @@ spec:
     spec:
       containers:
         - name: kite
-          image: eu.gcr.io/kite-prod-297314/api:25
+          image: eu.gcr.io/kite-prod-297314/api:29
           imagePullPolicy: IfNotPresent
           env:
             - name: JAEGER_SERVICE_NAME

@@ -1,4 +1,4 @@
-package resolvers
+package graph
 
 import (
 	"context"
@@ -9,29 +9,7 @@ import (
 	"github.com/dgrijalva/jwt-go"
 )
 
-const loadersKey = "loaders"
-
 type userIDKey struct{}
-
-type Loaders struct {
-	UserById *UserLoader
-}
-
-func ContextWithLoaders(r *Resolver, ctx context.Context) context.Context {
-	return context.WithValue(ctx, loadersKey, &Loaders{
-		UserById: NewUserLoaderWithCtx(r, ctx),
-	})
-}
-
-func WithLoaders(res *Resolver, next http.Handler) http.Handler {
-	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		next.ServeHTTP(w, r.Clone(ContextWithLoaders(res, r.Context())))
-	})
-}
-
-func LoadersFor(ctx context.Context) *Loaders {
-	return ctx.Value(loadersKey).(*Loaders)
-}
 
 func (r *Resolver) AuthMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, req *http.Request) {
@@ -69,7 +47,6 @@ func (r *Resolver) AuthMiddleware(next http.Handler) http.Handler {
 		next.ServeHTTP(w, req)
 	})
 }
-
 func UserIDFromContext(ctx context.Context) string {
 	v := ctx.Value(userIDKey{})
 	if v == nil {
